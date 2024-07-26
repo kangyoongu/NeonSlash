@@ -50,12 +50,11 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public GameObject GetPooledObject(string _name, Vector2 pos)
+    public GameObject GetPooledObject(string _name)
     {
         if (pooledObjects.ContainsKey(_name) && pooledObjects[_name].Count > 0)
         {
             GameObject obj = pooledObjects[_name].Dequeue();
-            obj.transform.position = pos;
             obj.SetActive(true);
             return obj;
         }
@@ -64,7 +63,7 @@ public class ObjectPool : MonoBehaviour
             PoolInfo poolInfo = GetPoolInfoByName(_name);
             if (poolInfo != null)
             {
-                GameObject newObj = Instantiate(poolInfo.prefab, pos, Quaternion.identity, transform);
+                GameObject newObj = Instantiate(poolInfo.prefab, Vector3.zero, Quaternion.identity, transform);
                 newObj.name = _name;
                 return newObj;
             }

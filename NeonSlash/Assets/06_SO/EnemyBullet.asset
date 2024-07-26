@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0926d9a7d4ca3f479c60a01218eab75, type: 3}
+  m_Name: EnemyBullet
+  m_EditorClassIdentifier: 
+  poolInfo:
+    prefab: {fileID: 7175412533972490362, guid: 8c826cf71f237624c8e35c73a836119b, type: 3}
+    poolSize: 100

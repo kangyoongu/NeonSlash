@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0926d9a7d4ca3f479c60a01218eab75, type: 3}
-  m_Name: PoolInfo
+  m_Script: {fileID: 11500000, guid: bb6350bb0fd2bcc45885c86bfe1e0503, type: 3}
+  m_Name: Item 15
   m_EditorClassIdentifier: 
-  poolInfo:
-    prefab: {fileID: 0}
-    poolSize: 0
+  itemCategory: 3
+  dialog: Crystal
+  itemName: cc
+  maxLevel: 4
+  firstCost: 12222
+  addCost: 111
