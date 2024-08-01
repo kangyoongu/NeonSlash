@@ -1,6 +1,5 @@
-using System;
+using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,46 +9,108 @@ public class Player : MonoBehaviour
     [HideInInspector] public Transform visual;
 
     [SerializeField] private PlayerStatSO _playerStatSO;
-    [HideInInspector] public PlayerStatSO playerStat;
+    [HideInInspector] public PlayerStatSO copyPlayerStat;
 
-    int currentHp;
+    PlayerSkill _playerSkill;
+    [HideInInspector] public PlayerMovement playerMove;
+    int _currentHp;
+
+    bool _inv = false;
+    public Material _invMaterial;
+    float _invTime = 0;
     private void Awake()
     {
+        _playerSkill = GetComponent<PlayerSkill>();
+        playerMove = GetComponent<PlayerMovement>();
         player = transform;
         visual = transform.Find("PlayerVisual");
-        playerStat = new PlayerStatSO(_playerStatSO);
+        ResetData();
+        _invMaterial.SetFloat("_Lerp", 0f);
     }
+
+    private void ResetData()
+    {
+        copyPlayerStat = new PlayerStatSO(_playerStatSO.playerStat);
+    }
+
     private void OnEnable()
     {
         GameManager.Instance.OnGameStart += GameStart;
+        ItemManager.Instance.OnUpgradePlayer += ChangeStat;
+        ItemManager.Instance.OnResetPlayer += ResetData;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnGameStart -= GameStart;
+        if(GameManager.Instance != null)
+            GameManager.Instance.OnGameStart -= GameStart;
+        if (ItemManager.Instance != null)
+        {
+            ItemManager.Instance.OnUpgradePlayer -= ChangeStat;
+            ItemManager.Instance.OnResetPlayer -= ResetData;
+        }
     }
 
     private void GameStart()
     {
-        CameraController.Instance.SetFOV(playerStat.fieldOfView);
-        currentHp = playerStat.health;
-        UIManager.Instance.SetHP(currentHp, playerStat.health);
+        CameraController.Instance.SetFOV(copyPlayerStat.playerStat.fieldOfView);
+        _currentHp = copyPlayerStat.playerStat.health;
+        UIManager.Instance.SetHP(_currentHp, copyPlayerStat.playerStat.health);
+        _playerSkill.GameStart();
     }
     public void TakeDamage(int amount)
     {
-        currentHp -= amount;
-        UIManager.Instance.SetHP(currentHp, playerStat.health);
-        if(currentHp <= 0)
+        if (!_inv || amount < 0)
         {
-            currentHp = 0;
-            StartCoroutine(Die());
+            _currentHp -= amount;
+            if (_currentHp <= 0)
+            {
+                _currentHp = 0;
+                StartCoroutine(Die());
+            }
+            else if(_currentHp > copyPlayerStat.playerStat.health)
+            {
+                _currentHp = copyPlayerStat.playerStat.health;
+            }
+            UIManager.Instance.SetHP(_currentHp, copyPlayerStat.playerStat.health);
         }
     }
+    public void StartInv(float time)
+    {
+        _inv = true;
+        _invMaterial.DOFloat(1f, "_Lerp", 1f);
+        _invTime += time;
 
+    }
+    private void Update()
+    {
+        if(_invTime > 0f)
+        {
+            _invTime -= Time.deltaTime;
+        }
+        else if(_invTime <= 0f && _inv)
+        {
+            _invTime = 0;
+            _inv = false;
+            _invMaterial.DOFloat(0f, "_Lerp", 1f);
+        }
+    }
     private IEnumerator Die()
     {
         GameManager.Instance.isGamePlaying = false;
         yield return new WaitForSeconds(2f);
+        GameManager.Instance.ApplyScore();
         UIManager.Instance.EndingUIIn(false);
+    }
+
+    private void ChangeStat(PlayerStat changeStat)
+    {
+        copyPlayerStat.playerStat.speed       += changeStat.speed;
+        copyPlayerStat.playerStat.fieldOfView += changeStat.fieldOfView;
+        copyPlayerStat.playerStat.attack      += changeStat.attack;
+        copyPlayerStat.playerStat.attackDis   += changeStat.attackDis;
+        copyPlayerStat.playerStat.health      += changeStat.health;
+        copyPlayerStat.playerStat.attackSpeed += changeStat.attackSpeed;
+        copyPlayerStat.playerStat.attackNum   += changeStat.attackNum;
     }
 }

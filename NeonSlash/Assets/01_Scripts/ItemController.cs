@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -46,7 +43,7 @@ public class ItemController : MonoBehaviour
         _outline.effectColor = _color;
         _icon.sprite = this.itemSO.icon;
         _nameText.text = this.itemSO.itemName;
-        SetLevel(_currentLevel);
+
     }
 
     public int GetUsedMoney()
@@ -74,7 +71,7 @@ public class ItemController : MonoBehaviour
     private void OnClickThisItem()
     {
         if (GameManager.Instance.isGamePlaying)
-            UIManager.Instance.ingameUpgradePanel.BuyWindowEnable(_currentLevel, _color, itemSO);
+            UIManager.Instance.ingameUpgradePanel.BuyWindowEnable(_currentLevel, _color, this);
         else
             UIManager.Instance.upgradePanel.BuyWindowEnable(_color, this);
     }

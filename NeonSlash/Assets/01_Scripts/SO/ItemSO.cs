@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,5 +23,14 @@ public class ItemSO : ScriptableObject
     public int firstCost;
     public int addCost;
 
-    public UpgradeSO upgradeSO;
+    [Serializable]
+    public struct UpgradeInfo
+    {
+        public UpgradePlayerSO player;
+        public UpgradeEnemySO enemy;
+        public UpgradeSkillSO skill;
+        public UpgradeCrystalSO crystal;
+    }
+
+    public List<UpgradeInfo> upgradePerLevel;
 }

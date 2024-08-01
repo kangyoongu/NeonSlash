@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -21,7 +22,6 @@ public class ShopBuyWindow : MonoBehaviour
 
     int currentPrice = 0;
     ItemController currentItem;
-
     public void BuyWindowEnable(Color outColor, ItemController itemCtrl)
     {
         currentItem = itemCtrl;
@@ -38,26 +38,35 @@ public class ShopBuyWindow : MonoBehaviour
             else
                 _level[i].gameObject.SetActive(true);
         }
+
         SetLevel();
         gameObject.SetActive(true);
     }
-    public void BuyWindowEnable(int currentLevel, Color outColor, ItemSO itemSO)
+    public void BuyWindowEnable(int currentLevel, Color outColor, ItemController itemCtrl)
     {
-        _itemName.text = itemSO.itemName;
-        _icon.sprite = itemSO.icon;
+        currentItem = itemCtrl;
+
+        _itemName.text = itemCtrl.itemSO.itemName;
+        _icon.sprite = itemCtrl.itemSO.icon;
         _outline.effectColor = outColor;
-        _dialog.text = itemSO.dialog;
+        _dialog.text = itemCtrl.itemSO.dialog;
 
         for (int i = 0; i < 5; i++)
         {
-            if (i < currentLevel)
-                _level[i].color = ItemManager.Instance.levelOnColor;
-
-            if (i >= itemSO.maxLevel)
+            if (i >= itemCtrl.itemSO.maxLevel)
                 _level[i].gameObject.SetActive(false);
             else
                 _level[i].gameObject.SetActive(true);
         }
+
+        for (int i = 0; i < _level.Length; i++)
+        {
+            if (i < currentItem.GetLevel())
+                _level[i].color = ItemManager.Instance.levelOnColor;
+            else
+                _level[i].color = new Color32(214, 212, 203, 255);
+        }
+
         gameObject.SetActive(true);
     }
 
@@ -72,7 +81,8 @@ public class ShopBuyWindow : MonoBehaviour
             return;
         }
         GameManager.Instance.Money -= currentPrice;
-        currentItem.SetLevel(currentItem.GetLevel() + 1);
+
+        ItemManager.Instance.OnClickBuy(currentItem);
         SetLevel();
     }
     private void SetLevel()
@@ -95,12 +105,12 @@ public class ShopBuyWindow : MonoBehaviour
         else if (currentPrice > GameManager.Instance.Money)
         {
             _priceBackground.color = _priceOffColor;
-            _price.text = $"구매 ({currentPrice}원)";
+            _price.text = $"구매 ({currentPrice}G)";
         }
         else
         {
             _priceBackground.color = _priceOnColor;
-            _price.text = $"구매 ({currentPrice}원)";
+            _price.text = $"구매 ({currentPrice}G)";
         }
     }
 }

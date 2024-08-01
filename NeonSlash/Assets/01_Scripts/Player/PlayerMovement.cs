@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -11,12 +9,16 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _currentVelocity;
     private Rigidbody _rigid;
     private Player _playerCompo;
-    public float Speed => _playerCompo.playerStat.speed;
+    public float Speed => _playerCompo.copyPlayerStat.playerStat.speed;
+    [HideInInspector] public Vector3 moveDirection;
 
+    [HideInInspector] public bool movable = true;
     void Start()
     {
         _rigid = GetComponent<Rigidbody>();
         _playerCompo = GetComponentInParent<Player>();
+        moveDirection = Vector3.forward;
+        movable = true;
     }
     private void OnEnable()
     {
@@ -25,15 +27,20 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnDisable()
     {
-        InputManager.Instance.OnMove -= Move;
-        InputManager.Instance.OnMousePos -= LookAtScreenPosition;
+        if (InputManager.Instance)
+        {
+            InputManager.Instance.OnMove -= Move;
+            InputManager.Instance.OnMousePos -= LookAtScreenPosition;
+        }
     }
     void Move(Vector2 input)
     {
-        if (GameManager.Instance.isGamePlaying)
+        if (GameManager.Instance.isGamePlaying && movable)
         {
             _currentVelocity = Vector2.Lerp(_currentVelocity, input, smoothing * Time.deltaTime);
             _rigid.velocity = new Vector3(_currentVelocity.x * Speed, _rigid.velocity.y, _currentVelocity.y * Speed);
+            if (_rigid.velocity.magnitude >= 0.9f)
+                moveDirection = _rigid.velocity.normalized;
         }
     }
     void LookAtScreenPosition(Vector2 screenPosition)

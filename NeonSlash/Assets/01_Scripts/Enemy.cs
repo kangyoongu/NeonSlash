@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 {
@@ -11,7 +10,11 @@ public class Enemy : MonoBehaviour
     Rigidbody _rigid;
 
     int _currentHp;
+    public UnityEvent OnEnableEvent;
+    public UnityEvent OnDie;
 
+    float _notOrbTime = 0f;
+    bool movable = true;
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody>();
@@ -19,11 +22,19 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         _currentHp = statSO.health;
+        TakeDamage(0);
+        _notOrbTime = 1f;
+        movable = true;
+        OnEnableEvent?.Invoke();
     }
     void Update()
     {
         if (GameManager.Instance.isGamePlaying)
             Rotate();
+
+        _notOrbTime -= Time.deltaTime;
+        if (movable == false && _notOrbTime <= 0.9f)
+            movable = true;
     }
 
     private void Rotate()
@@ -42,8 +53,8 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameManager.Instance.isGamePlaying)
-            _rigid.velocity = transform.forward * statSO.speed;
+        if (GameManager.Instance.isGamePlaying && _rigid.isKinematic == false && movable)
+            _rigid.velocity = new Vector3(transform.forward.x * statSO.speed, _rigid.velocity.y, transform.forward.z * statSO.speed);
     }
     public void TakeDamage(int amount)
     {
@@ -54,10 +65,23 @@ public class Enemy : MonoBehaviour
             StartCoroutine(Die());
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Orb") && _notOrbTime <= 0f)
+        {
+            TakeDamage(other.transform.root.GetComponent<PlayerSkill>().copySkillStat.skillStat.circleDamage);
+            _notOrbTime = 1f;
+            _rigid.AddForce((transform.position - Player.player.position).normalized * 50f, ForceMode.Impulse);
+            movable = false;
+        }
+    }
 
     private IEnumerator Die()
     {
+        GameManager.Instance.AddEarnMoney(statSO.reward);
+        GameManager.Instance.AddGameScore(statSO.score);
+        OnDie?.Invoke();
+        yield return new WaitForSeconds(6f);
         ObjectPool.Instance.ReturnToPool(gameObject);
-        yield return null;
     }
 }

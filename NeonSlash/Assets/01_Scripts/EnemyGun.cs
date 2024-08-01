@@ -10,7 +10,6 @@ public class EnemyGun : MonoBehaviour
     [SerializeField] private float spread;
 
     float _time = 0f;
-    bool MouseDown => InputManager.Instance.isMouseDown;
     private void Awake()
     {
         _enemyCompo = GetComponent<Enemy>();
@@ -37,7 +36,7 @@ public class EnemyGun : MonoBehaviour
         for (int i = 0; i < _enemyCompo.statSO.attackNum; i++)
         {
             Transform bullet = ObjectPool.Instance.GetPooledObject("EnemyBullet").transform;
-            Vector3 spreadVec = Random.onUnitSphere * Random.Range(0f, spread);
+            Vector3 spreadVec = Random.onUnitSphere * Random.Range(0f, spread) * Mathf.InverseLerp(1f, 15f, _enemyCompo.statSO.attackNum);
             bullet.SetPositionAndRotation(muzzle.position, muzzle.rotation * Quaternion.Euler(spreadVec));
             bullet.GetComponent<Bullet>().Init(_enemyCompo.statSO.attackDis, _enemyCompo.statSO.attack);
         }

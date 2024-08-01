@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406527411dd8c37469718ecea35a8519, type: 3}
   m_Name: KillerStat
   m_EditorClassIdentifier: 
-  speed: 0
-  health: 0
-  attack: 0
-  attackDis: 0
-  attackSpeed: 0
-  attackNum: 0
+  speed: 12
+  health: 120
+  attack: 3
+  attackDis: 5
+  attackSpeed: 0.7
+  attackNum: 8
+  reward: 60
+  score: 500

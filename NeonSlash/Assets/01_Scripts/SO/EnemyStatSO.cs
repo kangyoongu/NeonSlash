@@ -12,5 +12,5 @@ public class EnemyStatSO : ScriptableObject
     public float attackSpeed;
     public float attackNum;
     public int reward;
-
+    public int score;
 }

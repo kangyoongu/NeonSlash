@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6350bb0fd2bcc45885c86bfe1e0503, type: 3}
+  m_Name: 1Inv
+  m_EditorClassIdentifier: 
+  itemCategory: 3
+  icon: {fileID: 0}
+  dialog: 'Inv
+
+'
+  itemName: cc
+  maxLevel: 3
+  firstCost: 12222
+  addCost: 111
+  upgradePerLevel:
+  - player: {fileID: 0}
+    enemy: {fileID: 0}
+    skill: {fileID: 0}
+    crystal: {fileID: 11400000, guid: 72628b6c59453424e83d8bc697b1d917, type: 2}
+  - player: {fileID: 0}
+    enemy: {fileID: 0}
+    skill: {fileID: 0}
+    crystal: {fileID: 11400000, guid: 829f43b32617f814aa77774cb9c388c4, type: 2}
+  - player: {fileID: 0}
+    enemy: {fileID: 0}
+    skill: {fileID: 0}
+    crystal: {fileID: 11400000, guid: 829f43b32617f814aa77774cb9c388c4, type: 2}

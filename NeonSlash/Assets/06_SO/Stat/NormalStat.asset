@@ -15,7 +15,8 @@ MonoBehaviour:
   speed: 7
   health: 100
   attack: 1
-  attackDis: 10
-  attackSpeed: 2
+  attackDis: 5
+  attackSpeed: 1.5
   attackNum: 1
   reward: 10
+  score: 200

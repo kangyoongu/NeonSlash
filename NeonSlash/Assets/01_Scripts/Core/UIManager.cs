@@ -29,15 +29,24 @@ public class UIManager : SingleTon<UIManager>
     public UI[] playUI;
     public UI[] shopUI;
     public UI[] endingUI;
-    public TextMeshProUGUI endingText;
-
+    public UI[] settingUI;
     public GameObject block;
+
+    [Header("Game")]
     public GameObject gamePauseUI;
+    public TextMeshProUGUI endingText;
+    public TextMeshProUGUI leftTimeText;
+    public void SetLeftTime(float second) => leftTimeText.text = $"{second.ToString("0")}ÃÊ";
+    public TextMeshProUGUI[] earnMoneyText;
+    public TextMeshProUGUI[] gameScoreText;
+
+    public TextMeshProUGUI[] bestTexts;
 
     [Header("Shopping")]
     public ShopBuyWindow upgradePanel;
     public ShopBuyWindow ingameUpgradePanel;
-    bool shopping = false;
+    public GameObject resetButton;
+    bool option = false;
 
     [Header("Items")]
     public Transform[] itemParents;
@@ -58,12 +67,16 @@ public class UIManager : SingleTon<UIManager>
 
     public void ShopUIIn()
     {
-        shopping = true;
+        option = true;
+        if (GameManager.Instance.isGamePlaying)
+            resetButton.SetActive(false);
+        else
+            resetButton.SetActive(true);
         In(shopUI);
     }
     public void ShopUIOut()
     {
-        shopping = false;
+        option = false;
         Out(shopUI);
     }
 
@@ -75,6 +88,17 @@ public class UIManager : SingleTon<UIManager>
     public void EndingUIOut()
     {
         Out(endingUI);
+    }
+
+    public void SettingUIIn()
+    {
+        option = true;
+        In(settingUI);
+    }
+    public void SettingUIOut()
+    {
+        option = false;
+        Out(settingUI);
     }
 
 
@@ -149,13 +173,13 @@ public class UIManager : SingleTon<UIManager>
     }
     IEnumerator BlockTime(float time)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSecondsRealtime(time);
         block.SetActive(false);
     }
 
     public void TogglePause()
     {
-        if (GameManager.Instance.isGamePlaying && !shopping)
+        if (GameManager.Instance.isGamePlaying && !option)
         {
             gamePauseUI.SetActive(!gamePauseUI.activeSelf);
         }
@@ -173,7 +197,29 @@ public class UIManager : SingleTon<UIManager>
     {
         foreach(TextMeshProUGUI text in moneyTexts)
         {
-            text.text = $"µ· : {money}¿ø";
+            text.text = $"°ñµå : {money}G";
+        }
+    }
+    public void SetBestText(int score)
+    {
+        foreach (TextMeshProUGUI text in bestTexts)
+        {
+            text.text = $"ÃÖ°í Á¡¼ö : {score}";
+        }
+    }
+
+    public void SetEarnMoney(int value)
+    {
+        foreach (TextMeshProUGUI text in earnMoneyText)
+        {
+            text.text = $"°ñµå : {value}G";
+        }
+    }
+    public void SetGameScore(int value)
+    {
+        foreach (TextMeshProUGUI text in gameScoreText)
+        {
+            text.text = $"Á¡¼ö : {value}";
         }
     }
 

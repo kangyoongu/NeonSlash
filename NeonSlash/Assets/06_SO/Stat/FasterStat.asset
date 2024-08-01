@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406527411dd8c37469718ecea35a8519, type: 3}
   m_Name: FasterStat
   m_EditorClassIdentifier: 
-  speed: 0
-  health: 0
-  attack: 0
-  attackDis: 0
-  attackSpeed: 0
-  attackNum: 0
+  speed: 15
+  health: 70
+  attack: 1
+  attackDis: 5
+  attackSpeed: 1
+  attackNum: 1
+  reward: 20
+  score: 200

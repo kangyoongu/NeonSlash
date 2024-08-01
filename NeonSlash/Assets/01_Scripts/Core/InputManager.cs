@@ -12,6 +12,9 @@ public class InputManager : SingleTon<InputManager>
     public UnityEvent<InputAction.CallbackContext> OnClickEsc;
     public Action<Vector2> OnMove;
     public Action<Vector2> OnMousePos;
+
+    public Action OnClickDash;
+    public Action OnClickSkill;
     [HideInInspector] public bool isMouseDown = false;
     private void Awake()
     {
@@ -20,6 +23,17 @@ public class InputManager : SingleTon<InputManager>
         _inputs.Overall.Escape.performed += Excape;
         _inputs.Player.MouseClick.started += (obj) => isMouseDown = true;
         _inputs.Player.MouseClick.canceled += (obj) => isMouseDown = false;
+
+        _inputs.Player.Dash.started += EnterSpace;
+        _inputs.Player.Skill1.started += EnterE;
+    }
+    private void EnterE(InputAction.CallbackContext obj)
+    {
+        OnClickSkill?.Invoke();
+    }
+    private void EnterSpace(InputAction.CallbackContext obj)
+    {
+        OnClickDash?.Invoke();
     }
     private void Update()
     {

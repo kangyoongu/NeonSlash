@@ -6,26 +6,66 @@ public class GameManager : SingleTon<GameManager>
 {
     public bool isGamePlaying = false;
 
+    float _leftTime = 300f;
+    int earnMoney = 0;
+    int gameScore = 0;
+
     public Action OnGameStart;
-    private int _money = 999999;
     public int Money
     {
-        get => _money;
+        get => PlayerPrefs.GetInt("Money");
         set
         {
-            _money = value;
-            UIManager.Instance.SetMoneyText(_money);
+            PlayerPrefs.SetInt("Money", value);
+            UIManager.Instance.SetMoneyText(PlayerPrefs.GetInt("Money"));
         }
+    }
+    private void Awake()
+    {
+        if (!PlayerPrefs.HasKey("Money"))
+            PlayerPrefs.SetInt("Money", 999999999);
+
+        if (!PlayerPrefs.HasKey("BestScore"))
+            PlayerPrefs.SetInt("BestScore", 0);
     }
     private void Start()
     {
-        UIManager.Instance.SetMoneyText(_money);
+        UIManager.Instance.SetMoneyText(Money);
+        UIManager.Instance.SetBestText(PlayerPrefs.GetInt("BestScore"));
     }
+
+    private void Update()
+    {
+        if (isGamePlaying)
+        {
+            _leftTime -= Time.deltaTime;
+            if(_leftTime <= 0)
+            {
+                Clear();
+            }
+            UIManager.Instance.SetLeftTime(_leftTime);
+        }
+    }
+
+    private void Clear()
+    {
+        _leftTime = 0;
+        isGamePlaying = false;
+        Money += earnMoney;
+        ApplyScore();
+        UIManager.Instance.EndingUIIn(true);
+    }
+
     public void GameStart()
     {
         isGamePlaying = true;
+        earnMoney = 0;
+        gameScore = 0;
+        UIManager.Instance.SetEarnMoney(earnMoney);
+        UIManager.Instance.SetGameScore(gameScore);
         OnGameStart?.Invoke();
     }
+
     public void ExitGame()
     {
 #if UNITY_EDITOR
@@ -38,5 +78,24 @@ public class GameManager : SingleTon<GameManager>
     public void ReloadScene()
     {
         SceneManager.LoadScene(gameObject.scene.name);
+    }
+    public void AddEarnMoney(int value)
+    {
+        earnMoney += value;
+        UIManager.Instance.SetEarnMoney(earnMoney);
+    }
+    public void AddGameScore(int value)
+    {
+        gameScore += value;
+        UIManager.Instance.SetGameScore(gameScore);
+    }
+
+    public void ApplyScore()
+    {
+        if(gameScore >= PlayerPrefs.GetInt("BestScore"))
+        {
+            PlayerPrefs.SetInt("BestScore", gameScore);
+            UIManager.Instance.SetBestText(gameScore);
+        }
     }
 }

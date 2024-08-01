@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3050d0975ca32ba4ea9f006f3acde10a, type: 3}
   m_Name: PlayerStat
   m_EditorClassIdentifier: 
-  speed: 10
-  fieldOfView: 10
-  attack: 20
-  attackDis: 1
-  health: 100
-  attackSpeed: 0.2
-  attackNum: 10
+  playerStat:
+    speed: 10
+    fieldOfView: 10
+    attack: 20
+    attackDis: 1
+    health: 10000
+    attackSpeed: 0.3
+    attackNum: 1

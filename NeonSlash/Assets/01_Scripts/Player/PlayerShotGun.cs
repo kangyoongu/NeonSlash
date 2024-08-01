@@ -25,7 +25,7 @@ public class PlayerShotGun : MonoBehaviour
             _time += Time.deltaTime;
             if (MouseDown)
             {
-                if (_time >= _playerCompo.playerStat.attackSpeed)
+                if (_time >= _playerCompo.copyPlayerStat.playerStat.attackSpeed)
                 {
                     _time = 0;
                     Shot();
@@ -36,12 +36,12 @@ public class PlayerShotGun : MonoBehaviour
 
     private void Shot()
     {
-        for (int i = 0; i < _playerCompo.playerStat.attackNum; i++)
+        for (int i = 0; i < _playerCompo.copyPlayerStat.playerStat.attackNum; i++)
         {
             Transform bullet = ObjectPool.Instance.GetPooledObject("Bullet").transform;
-            Vector3 spreadVec = Random.onUnitSphere * Random.Range(0f, spread);
+            Vector3 spreadVec = Random.onUnitSphere * Random.Range(0f, spread) * Mathf.InverseLerp(1f, 50f, _playerCompo.copyPlayerStat.playerStat.attackNum);//나중에 최대 attackNum으로 변경
             bullet.SetPositionAndRotation(muzzle.position, muzzle.rotation * Quaternion.Euler(spreadVec));
-            bullet.GetComponent<Bullet>().Init(_playerCompo.playerStat.attackDis, _playerCompo.playerStat.attack);
+            bullet.GetComponent<Bullet>().Init(_playerCompo.copyPlayerStat.playerStat.attackDis, _playerCompo.copyPlayerStat.playerStat.attack);
         }
     }
 }

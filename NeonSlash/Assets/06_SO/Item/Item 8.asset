@@ -13,8 +13,22 @@ MonoBehaviour:
   m_Name: Item 8
   m_EditorClassIdentifier: 
   itemCategory: 0
+  icon: {fileID: 0}
   dialog: WeaponTest
   itemName: "\uACF5\uACA9\uB825\uC744 \uC62C\uB9B4\uAC83\uC774\uB2E4"
-  maxLevel: 5
+  maxLevel: 3
   firstCost: 1000
   addCost: 100
+  upgradePerLevel:
+  - player: {fileID: 11400000, guid: 9ec0f2b1153c1ca4a89adaeafe3b0fd9, type: 2}
+    enemy: {fileID: 0}
+    skill: {fileID: 0}
+    crystal: {fileID: 0}
+  - player: {fileID: 11400000, guid: 9ec0f2b1153c1ca4a89adaeafe3b0fd9, type: 2}
+    enemy: {fileID: 0}
+    skill: {fileID: 0}
+    crystal: {fileID: 0}
+  - player: {fileID: 11400000, guid: 9ec0f2b1153c1ca4a89adaeafe3b0fd9, type: 2}
+    enemy: {fileID: 0}
+    skill: {fileID: 0}
+    crystal: {fileID: 0}
