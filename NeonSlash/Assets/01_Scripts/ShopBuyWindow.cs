@@ -74,10 +74,12 @@ public class ShopBuyWindow : MonoBehaviour
     {
         if(currentPrice > GameManager.Instance.Money)
         {
+            SoundManager.Instance.PlayAudio(Clips.Cancel);
             return;
         }
         if(currentItem.GetLevel() >= currentItem.itemSO.maxLevel)
         {
+            SoundManager.Instance.PlayAudio(Clips.Cancel);
             return;
         }
         GameManager.Instance.Money -= currentPrice;

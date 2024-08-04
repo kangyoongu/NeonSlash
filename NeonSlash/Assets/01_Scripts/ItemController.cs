@@ -70,6 +70,7 @@ public class ItemController : MonoBehaviour
     }
     private void OnClickThisItem()
     {
+        SoundManager.Instance.PlayAudio(Clips.Button);
         if (GameManager.Instance.isGamePlaying)
             UIManager.Instance.ingameUpgradePanel.BuyWindowEnable(_currentLevel, _color, this);
         else

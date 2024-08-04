@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     public EnemyStatSO statSO;
     public float rotationSpeed;
     public Transform hpBar;
+    [HideInInspector] public AudioSource audioSource;
     Rigidbody _rigid;
 
     int _currentHp;
@@ -18,6 +19,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
     private void OnEnable()
     {
@@ -69,6 +71,7 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Orb") && _notOrbTime <= 0f)
         {
+            SoundManager.Instance.PlayAudio(Clips.OrbHit);
             TakeDamage(other.transform.root.GetComponent<PlayerSkill>().copySkillStat.skillStat.circleDamage);
             _notOrbTime = 1f;
             _rigid.AddForce((transform.position - Player.player.position).normalized * 50f, ForceMode.Impulse);
@@ -78,6 +81,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator Die()
     {
+        audioSource.PlayOneShot(SoundManager.Instance.clips3D.enemyDie, 6f);
         GameManager.Instance.AddEarnMoney(statSO.reward);
         GameManager.Instance.AddGameScore(statSO.score);
         OnDie?.Invoke();

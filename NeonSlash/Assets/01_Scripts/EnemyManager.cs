@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -77,8 +78,7 @@ public class EnemyManager : SingleTon<EnemyManager>
                 {
                     for (int j = 0; j < spawnDatas[_currentPhase].spawnData[i].count; j++)
                     {
-                        if (_unlockEnemyDic[spawnDatas[_currentPhase].spawnData[i].enemyType]) 
-                            SpawnEnemy(spawnDatas[_currentPhase].spawnData[i].enemyType);
+                        SpawnEnemy(spawnDatas[_currentPhase].spawnData[i].enemyType);
                     }
                 }
                 for (int j = 0; j < spawnDatas[_currentPhase].defaltSpawnData.Length; j++)
@@ -86,6 +86,7 @@ public class EnemyManager : SingleTon<EnemyManager>
                     StartCoroutine(SpawnDelay(_currentPhase, j));
                 }
 
+                SoundManager.Instance.PlayAudio(Clips.Wave);
                 _time = 0;
                 _currentPhase++;
             }
@@ -105,9 +106,28 @@ public class EnemyManager : SingleTon<EnemyManager>
     }
     private void SpawnEnemy(EnemyType type)
     {
-        GameObject enemy = ObjectPool.Instance.GetPooledObject(type.ToString() + "Enemy");
-        Vector2 offset = Random.insideUnitCircle.normalized;
-        enemy.transform.position = Player.player.position + new Vector3(offset.x, 0f, offset.y) * 50f;
+
+        if (_unlockEnemyDic[type])
+        {
+            GameObject enemy = ObjectPool.Instance.GetPooledObject(type.ToString() + "Enemy");
+            Vector2 offset = Random.insideUnitCircle.normalized;
+            enemy.transform.position = Player.player.position + new Vector3(offset.x, 0f, offset.y) * 50f;
+        }
+        else
+        {
+            var trueEnums = _unlockEnemyDic.Where(pair => pair.Value).Select(pair => pair.Key).ToList();
+
+            if (trueEnums.Count == 0)
+            {
+                throw new InvalidOperationException("No enum values are set to true.");
+            }
+
+            int randomIndex = Random.Range(0, trueEnums.Count);
+            
+            GameObject enemy = ObjectPool.Instance.GetPooledObject(trueEnums[randomIndex].ToString() + "Enemy");
+            Vector2 offset = Random.insideUnitCircle.normalized;
+            enemy.transform.position = Player.player.position + new Vector3(offset.x, 0f, offset.y) * 50f;
+        }
     }
 
 }

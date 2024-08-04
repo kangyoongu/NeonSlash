@@ -22,6 +22,7 @@ namespace Kang
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            SoundManager.Instance.PlayAudio(Clips.Button);
             tabGroup.OnTabSelected(this);
         }
 
