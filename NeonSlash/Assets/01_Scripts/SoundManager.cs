@@ -18,19 +18,19 @@ public class SoundManager : MonoBehaviour
     {
         BGMSlider.value = JsonManager.Instance.BGM;
         SFXSlider.value = JsonManager.Instance.SFX;
-        audioMixer.SetFloat("BGM", Mathf.Log10(BGMSlider.value) * 20);
-        audioMixer.SetFloat("SFX", Mathf.Log10(SFXSlider.value) * 20);
+        audioMixer.SetFloat("BGM", Mathf.Log10(BGMSlider.value) * 20f);
+        audioMixer.SetFloat("SFX", Mathf.Log10(SFXSlider.value) * 20f);
     }
 
     public void SetBGMVolume(float volume)
     {
-        audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20f);
         JsonManager.Instance.BGM = volume;
     }
 
     public void SetSFXVolume(float volume)
     {
-        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20f);
         JsonManager.Instance.SFX = volume;
     }
 }

@@ -35,6 +35,15 @@ public partial class @OverallInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpawnBoss"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb4a129a-c5ca-4e6d-a91f-f45cc7e6c0f8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -46,6 +55,17 @@ public partial class @OverallInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4aa6f5b0-02fe-40b2-9833-19c06916376b"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SpawnBoss"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -226,6 +246,7 @@ public partial class @OverallInput: IInputActionCollection2, IDisposable
         // Overall
         m_Overall = asset.FindActionMap("Overall", throwIfNotFound: true);
         m_Overall_Escape = m_Overall.FindAction("Escape", throwIfNotFound: true);
+        m_Overall_SpawnBoss = m_Overall.FindAction("SpawnBoss", throwIfNotFound: true);
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
@@ -295,11 +316,13 @@ public partial class @OverallInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Overall;
     private List<IOverallActions> m_OverallActionsCallbackInterfaces = new List<IOverallActions>();
     private readonly InputAction m_Overall_Escape;
+    private readonly InputAction m_Overall_SpawnBoss;
     public struct OverallActions
     {
         private @OverallInput m_Wrapper;
         public OverallActions(@OverallInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Escape => m_Wrapper.m_Overall_Escape;
+        public InputAction @SpawnBoss => m_Wrapper.m_Overall_SpawnBoss;
         public InputActionMap Get() { return m_Wrapper.m_Overall; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -312,6 +335,9 @@ public partial class @OverallInput: IInputActionCollection2, IDisposable
             @Escape.started += instance.OnEscape;
             @Escape.performed += instance.OnEscape;
             @Escape.canceled += instance.OnEscape;
+            @SpawnBoss.started += instance.OnSpawnBoss;
+            @SpawnBoss.performed += instance.OnSpawnBoss;
+            @SpawnBoss.canceled += instance.OnSpawnBoss;
         }
 
         private void UnregisterCallbacks(IOverallActions instance)
@@ -319,6 +345,9 @@ public partial class @OverallInput: IInputActionCollection2, IDisposable
             @Escape.started -= instance.OnEscape;
             @Escape.performed -= instance.OnEscape;
             @Escape.canceled -= instance.OnEscape;
+            @SpawnBoss.started -= instance.OnSpawnBoss;
+            @SpawnBoss.performed -= instance.OnSpawnBoss;
+            @SpawnBoss.canceled -= instance.OnSpawnBoss;
         }
 
         public void RemoveCallbacks(IOverallActions instance)
@@ -426,6 +455,7 @@ public partial class @OverallInput: IInputActionCollection2, IDisposable
     public interface IOverallActions
     {
         void OnEscape(InputAction.CallbackContext context);
+        void OnSpawnBoss(InputAction.CallbackContext context);
     }
     public interface IPlayerActions
     {

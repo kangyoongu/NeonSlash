@@ -2,30 +2,19 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Enemy : MonoBehaviour
+public class Enemy : AbstractEnemy
 {
     public EnemyStatSO statSO;
     public float rotationSpeed;
-    public Transform hpBar;
-    Rigidbody _rigid;
-
-    int _currentHp;
-    public UnityEvent OnEnableEvent;
-    public UnityEvent OnDie;
 
     float _notOrbTime = 0f;
     bool movable = true;
-    private void Awake()
+
+    protected override void OnEnable()
     {
-        _rigid = GetComponent<Rigidbody>();
-    }
-    private void OnEnable()
-    {
-        _currentHp = statSO.health;
-        TakeDamage(0);
+        base.OnEnable();
         _notOrbTime = 1f;
         movable = true;
-        OnEnableEvent?.Invoke();
     }
     void Update()
     {
@@ -56,15 +45,7 @@ public class Enemy : MonoBehaviour
         if (GameManager.Instance.isGamePlaying && _rigid.isKinematic == false && movable)
             _rigid.velocity = new Vector3(transform.forward.x * statSO.speed, _rigid.velocity.y, transform.forward.z * statSO.speed);
     }
-    public void TakeDamage(int amount)
-    {
-        _currentHp -= amount;
-        hpBar.localScale = new Vector3((float)_currentHp / statSO.health, 1f, 1f);
-        if(_currentHp <= 0)
-        {
-            StartCoroutine(Die());
-        }
-    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Orb") && _notOrbTime <= 0f)
@@ -76,12 +57,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private IEnumerator Die()
+    protected override IEnumerator Die()
     {
         GameManager.Instance.AddEarnMoney(statSO.reward);
         GameManager.Instance.AddGameScore(statSO.score);
-        OnDie?.Invoke();
-        yield return new WaitForSeconds(6f);
-        ObjectPool.Instance.ReturnToPool(gameObject);
+        StartCoroutine(base.Die());
+        yield return null;
+    }
+
+    protected override int GetHealth()
+    {
+        return statSO.health;
     }
 }

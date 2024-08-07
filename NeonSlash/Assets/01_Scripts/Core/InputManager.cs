@@ -15,12 +15,15 @@ public class InputManager : SingleTon<InputManager>
 
     public Action OnClickDash;
     public Action OnClickSkill;
+    public Action OnClickF;
     [HideInInspector] public bool isMouseDown = false;
     private void Awake()
     {
         _inputs = new OverallInput();
         _inputs.Enable();
         _inputs.Overall.Escape.performed += Excape;
+        _inputs.Overall.SpawnBoss.started += EnterF;
+
         _inputs.Player.MouseClick.started += (obj) => isMouseDown = true;
         _inputs.Player.MouseClick.canceled += (obj) => isMouseDown = false;
 
@@ -30,6 +33,10 @@ public class InputManager : SingleTon<InputManager>
     private void EnterE(InputAction.CallbackContext obj)
     {
         OnClickSkill?.Invoke();
+    }
+    private void EnterF(InputAction.CallbackContext obj)
+    {
+        OnClickF?.Invoke();
     }
     private void EnterSpace(InputAction.CallbackContext obj)
     {
