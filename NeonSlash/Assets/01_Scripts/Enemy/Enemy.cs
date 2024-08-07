@@ -6,27 +6,20 @@ public class Enemy : AbstractEnemy
 {
     public EnemyStatSO statSO;
     public float rotationSpeed;
-    public Transform hpBar;
     [HideInInspector] public AudioSource audioSource;
-    Rigidbody _rigid;
-
-    int _currentHp;
-    public UnityEvent OnEnableEvent;
-    public UnityEvent OnDie;
 
     float _notOrbTime = 0f;
     bool movable = true;
 
-    protected override void OnEnable()
+    protected override void Awake()
     {
         base.OnEnable();
         _rigid = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
     }
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        _currentHp = statSO.health;
-        TakeDamage(0);
+        base.OnEnable();
         _notOrbTime = 1f;
         movable = true;
     }

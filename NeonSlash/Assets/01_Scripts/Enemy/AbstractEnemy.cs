@@ -12,7 +12,7 @@ public abstract class AbstractEnemy : MonoBehaviour
     public UnityEvent OnEnableEvent;
     public UnityEvent OnDie;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         _rigid = GetComponent<Rigidbody>();
     }

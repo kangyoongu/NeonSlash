@@ -11,7 +11,6 @@ public class FloorMove : MonoBehaviour
     [SerializeField] private float duration;
     private void Awake()
     {
-        float trash;
         floorMaterial = GetComponent<MeshRenderer>().material;
     }
     private void Start()

@@ -1753,7 +1753,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &324121951
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3135,7 +3135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &493134562
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3221,7 +3221,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &524300961
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16828,41 +16828,13 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 21b151b6802022f4c850c857b28ba434, type: 2}
   BGMSlider: {fileID: 2102723839}
   SFXSlider: {fileID: 2929777468655989138}
-  _audios:
-  - clip: {fileID: 8300000, guid: a19a21be1d874074b8b94131fe4af530, type: 3}
-    name: 0
-  - clip: {fileID: 8300000, guid: caebeeb3d4f102047aa6b5d7ea75ad28, type: 3}
-    name: 1
-  - clip: {fileID: 8300000, guid: 534ec39b823e3ad4b966353a27b0bdef, type: 3}
-    name: 2
-  - clip: {fileID: 8300000, guid: 04f2343e6b182324e9d37b362cd31d95, type: 3}
-    name: 3
-  - clip: {fileID: 8300000, guid: d1acc28bc8cc461449ddcff628d14415, type: 3}
-    name: 4
-  - clip: {fileID: 8300000, guid: 2b78b6dfb9ca60444b521042089ee0f8, type: 3}
-    name: 5
-  - clip: {fileID: 8300000, guid: fff563ffa29521743893edc5ee1d9a01, type: 3}
-    name: 6
-  - clip: {fileID: 8300000, guid: 52ef423a64ab1284e93925c2c23c1fd4, type: 3}
-    name: 7
-  - clip: {fileID: 8300000, guid: 628cc784777ccd643a937f782a194a81, type: 3}
-    name: 8
-  - clip: {fileID: 8300000, guid: 0d16234212cb3874dafdf10cb9f1abe4, type: 3}
-    name: 9
-  - clip: {fileID: 8300000, guid: 63ebc5c78a54deb418689dac3f5e0099, type: 3}
-    name: 10
-  - clip: {fileID: 8300000, guid: e78b3c8894909f543ad6b00c4c321147, type: 3}
-    name: 11
-  - clip: {fileID: 8300000, guid: 17ebe3c60d28238499a0f681bb1a75be, type: 3}
-    name: 12
-  - clip: {fileID: 8300000, guid: 42769c869d2ecab479720fe66af9a4e5, type: 3}
-    name: 13
-  inGameBGM: {fileID: 8300000, guid: a23b90d6d06b54fca8b639437c3812fd, type: 3}
-  mainBGM: {fileID: 8300000, guid: afb0c8ab1e53740ac8f490760e0f3c6d, type: 3}
-  bgmSource: {fileID: 1768117017}
+  _audios: []
+  inGameBGM: {fileID: 0}
+  mainBGM: {fileID: 0}
+  bgmSource: {fileID: 0}
   clips3D:
-    enemyShot: {fileID: 8300000, guid: a19a21be1d874074b8b94131fe4af530, type: 3}
-    enemyDie: {fileID: 8300000, guid: 58edbfd205f56b142a28c1f31dc92a8e, type: 3}
+    enemyShot: {fileID: 0}
+    enemyDie: {fileID: 0}
 --- !u!82 &1158757920
 AudioSource:
   m_ObjectHideFlags: 0
@@ -20287,8 +20259,8 @@ MonoBehaviour:
   _playerStatSO: {fileID: 11400000, guid: c42218af1422a9c449a0a5f3a447e1c1, type: 2}
   copyPlayerStat: {fileID: 0}
   playerMove: {fileID: 0}
-  hpParticle: {fileID: 890563362}
-  starParticle: {fileID: 660675480}
+  hpParticle: {fileID: 0}
+  starParticle: {fileID: 0}
   _invMaterial: {fileID: 2100000, guid: 927c03b79eca42e41aaf7c6d7553346d, type: 2}
 --- !u!54 &1633403179
 Rigidbody:
@@ -20511,7 +20483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f2e4f56a4db4a4780ef602bec169f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 15
+  duration: 0
 --- !u!114 &1698224409 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2299798783159368502, guid: c793b073ef314574e9866334b78e1e9a, type: 3}
@@ -26788,7 +26760,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1872132935
 RectTransform:
   m_ObjectHideFlags: 0
