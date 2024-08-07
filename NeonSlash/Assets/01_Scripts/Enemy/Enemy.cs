@@ -6,6 +6,13 @@ public class Enemy : AbstractEnemy
 {
     public EnemyStatSO statSO;
     public float rotationSpeed;
+    public Transform hpBar;
+    [HideInInspector] public AudioSource audioSource;
+    Rigidbody _rigid;
+
+    int _currentHp;
+    public UnityEvent OnEnableEvent;
+    public UnityEvent OnDie;
 
     float _notOrbTime = 0f;
     bool movable = true;
@@ -13,6 +20,13 @@ public class Enemy : AbstractEnemy
     protected override void OnEnable()
     {
         base.OnEnable();
+        _rigid = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
+    }
+    private void OnEnable()
+    {
+        _currentHp = statSO.health;
+        TakeDamage(0);
         _notOrbTime = 1f;
         movable = true;
     }
@@ -28,13 +42,13 @@ public class Enemy : AbstractEnemy
 
     private void Rotate()
     {
-        // ¸ñÇ¥ ¹æÇâ °è»ê
+        // ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         Vector3 direction = (Player.player.position - transform.position).normalized;
 
-        // ¸ñÇ¥ ¹æÇâ¿¡¼­ YÃà È¸Àü °ª¸¸ °¡Á®¿À±â
+        // ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½â¿¡ï¿½ï¿½ Yï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Vector3 targetDirection = new Vector3(direction.x, 0, direction.z);
 
-        // ¿ÀºêÁ§Æ® È¸Àü
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® È¸ï¿½ï¿½
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
 
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -50,6 +64,7 @@ public class Enemy : AbstractEnemy
     {
         if (other.CompareTag("Orb") && _notOrbTime <= 0f)
         {
+            SoundManager.Instance.PlayAudio(Clips.OrbHit);
             TakeDamage(other.transform.root.GetComponent<PlayerSkill>().copySkillStat.skillStat.circleDamage);
             _notOrbTime = 1f;
             _rigid.AddForce((transform.position - Player.player.position).normalized * 50f, ForceMode.Impulse);
@@ -59,6 +74,7 @@ public class Enemy : AbstractEnemy
 
     protected override IEnumerator Die()
     {
+        audioSource.PlayOneShot(SoundManager.Instance.clips3D.enemyDie, 6f);
         GameManager.Instance.AddEarnMoney(statSO.reward);
         GameManager.Instance.AddGameScore(statSO.score);
         StartCoroutine(base.Die());

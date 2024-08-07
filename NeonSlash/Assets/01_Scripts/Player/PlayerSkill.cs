@@ -128,6 +128,7 @@ public class PlayerSkill : MonoBehaviour
     {
         if (copySkillStat.skillStat.unlockAttack && _skillCooltime <= 0f && GameManager.Instance.isGamePlaying)
         {
+            SoundManager.Instance.PlayAudio(Clips.Skill1, 0.45f);
             _skillParticle.Play();
             _skillCooltime = copySkillStat.skillStat.attackCooltime;
             List<Enemy> enemiesInSight = DetectEnemies();
@@ -168,6 +169,7 @@ public class PlayerSkill : MonoBehaviour
     {
         if (copySkillStat.skillStat.unlockDash && GameManager.Instance.isGamePlaying && _dashCooltime <= 0f)
         {
+            SoundManager.Instance.PlayAudio(Clips.Dash);
             _dashCooltime = copySkillStat.skillStat.dashCooltime;
             _playerCompo.playerMove.movable = false;
             _rigid.AddForce(_playerCompo.playerMove.moveDirection * copySkillStat.skillStat.dashDistance * 100, ForceMode.Impulse);

@@ -16,7 +16,7 @@ MonoBehaviour:
     speed: 0
     fieldOfView: 10
     attack: 0
-    attackDis: 0
+    attackDis: 3
     health: 0
     attackSpeed: 0
     attackNum: 0

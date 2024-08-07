@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
 
     PlayerSkill _playerSkill;
     [HideInInspector] public PlayerMovement playerMove;
+    public ParticleSystem hpParticle;
+    public ParticleSystem starParticle;
     int _currentHp;
 
     bool _inv = false;
@@ -62,6 +64,7 @@ public class Player : MonoBehaviour
     {
         if (!_inv || amount < 0)
         {
+            SoundManager.Instance.PlayAudio(Clips.PlayerHit, 0.2f);
             _currentHp -= amount;
             if (_currentHp <= 0)
             {
@@ -97,6 +100,7 @@ public class Player : MonoBehaviour
     }
     private IEnumerator Die()
     {
+        SoundManager.Instance.PlayAudio(Clips.PlayerDie, 0.3f);
         GameManager.Instance.isGamePlaying = false;
         yield return new WaitForSeconds(2f);
         GameManager.Instance.ApplyScore();

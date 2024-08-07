@@ -16,7 +16,7 @@ MonoBehaviour:
     speed: 10
     fieldOfView: 10
     attack: 20
-    attackDis: 1
-    health: 10000
+    attackDis: 7
+    health: 894
     attackSpeed: 0.3
     attackNum: 1

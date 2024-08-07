@@ -49,6 +49,7 @@ public class GameManager : SingleTon<GameManager>
 
     private void Clear()
     {
+        SoundManager.Instance.PlayAudio(Clips.Clear);
         _leftTime = 0;
         isGamePlaying = false;
         Money += earnMoney;

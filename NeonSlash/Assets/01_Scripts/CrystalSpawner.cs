@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 public class CrystalSpawner : SingleTon<CrystalSpawner>
 {
     [SerializeField] private CrystalStatSO crystalStatSO;
-     public CrystalStatSO copyCrystalStat;
+    [HideInInspector] public CrystalStatSO copyCrystalStat;
 
     [SerializeField] private float _interval = 5f;
     float _time = 0;

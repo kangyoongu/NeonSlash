@@ -36,6 +36,7 @@ public class PlayerShotGun : MonoBehaviour
 
     private void Shot()
     {
+        SoundManager.Instance.PlayAudio(Clips.PlayerShot, 0.2f);
         for (int i = 0; i < _playerCompo.copyPlayerStat.playerStat.attackNum; i++)
         {
             Transform bullet = ObjectPool.Instance.GetPooledObject("Bullet").transform;

@@ -75,6 +75,7 @@ public class ItemManager : SingleTon<ItemManager>
 
     public void OnClickBuy(ItemController currentItem)
     {
+        SoundManager.Instance.PlayAudio(Clips.Upgrade);
         switch (currentItem.itemSO.itemCategory)
         {
             case ItemCategory.Player:
@@ -103,10 +104,12 @@ public class ItemManager : SingleTon<ItemManager>
 
     public void OnClickReset(int resetPrice)
     {
-        if (GameManager.Instance.Money >= resetPrice)
+        int total = GetTotalUsedMoney();
+        if (GameManager.Instance.Money >= resetPrice && total > 0)
         {
+            SoundManager.Instance.PlayAudio(Clips.Button);
             //µ· °è»ê
-            GameManager.Instance.Money += GetTotalUsedMoney() - resetPrice;
+            GameManager.Instance.Money += total - resetPrice;
             foreach (ItemController item in _totalList)
             {
                 item.SetLevel(0);
@@ -119,6 +122,10 @@ public class ItemManager : SingleTon<ItemManager>
             EnemyManager.Instance.ResetUnlockData();
 
             JsonManager.Instance.ResetGameData();
+        }
+        else
+        {
+            SoundManager.Instance.PlayAudio(Clips.Cancel);
         }
     }
     public int GetTotalUsedMoney()

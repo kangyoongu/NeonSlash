@@ -181,6 +181,7 @@ public class UIManager : SingleTon<UIManager>
     {
         if (GameManager.Instance.isGamePlaying && !option)
         {
+            SoundManager.Instance.PlayAudio(Clips.Button);
             gamePauseUI.SetActive(!gamePauseUI.activeSelf);
         }
     }
