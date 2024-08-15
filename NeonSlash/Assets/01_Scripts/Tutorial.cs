@@ -155,7 +155,6 @@ public class Tutorial : SingleTon<Tutorial>
     }
     private void Update()
     {
-        print(PlayerPrefs.GetInt("Tut"));
         if (PlayerPrefs.GetInt("Tut") == 3 && Time.timeScale == 1f)
         {
             player.TakeDamage(player.CurrentHp - 1);
