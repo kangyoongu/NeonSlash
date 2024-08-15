@@ -83,7 +83,8 @@ public class EnemyManager : SingleTon<EnemyManager>
                 }
                 for (int j = 0; j < spawnDatas[_currentPhase].defaltSpawnData.Length; j++)
                 {
-                    StartCoroutine(SpawnDelay(_currentPhase, j));
+                    if (_unlockEnemyDic[spawnDatas[_currentPhase].defaltSpawnData[j].enemyType])
+                        StartCoroutine(SpawnDelay(_currentPhase, j));
                 }
 
                 _time = 0;

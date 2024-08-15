@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: KillerStat
   m_EditorClassIdentifier: 
   speed: 12
-  health: 120
-  attack: 3
+  health: 240
+  attack: 6
   attackDis: 5
   attackSpeed: 0.7
-  attackNum: 8
-  reward: 60
-  score: 500
+  attackNum: 3
+  reward: 180
+  score: 700

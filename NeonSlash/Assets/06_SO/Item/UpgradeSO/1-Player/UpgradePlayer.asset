@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: UpgradePlayer
   m_EditorClassIdentifier: 
   changeStat:
-    speed: 20
+    speed: 2
     fieldOfView: 0
     attack: 0
     attackDis: 0

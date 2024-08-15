@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillStat:
     unlockDash: 0
-    dashDistance: 1
-    dashCooltime: 3
+    dashDistance: 0
+    dashCooltime: 0
     unlockAttack: 0
-    attackDamage: 50
-    attackDistance: 13
-    attackCooltime: 5
+    attackDamage: 0
+    attackDistance: 0
+    attackCooltime: 0
     unlockCircle: 0
-    circleNum: 1
-    circleDamage: 10
+    circleNum: 0
+    circleDamage: 0
