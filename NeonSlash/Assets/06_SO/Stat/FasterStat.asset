@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: FasterStat
   m_EditorClassIdentifier: 
   speed: 15
-  health: 70
-  attack: 1
+  health: 140
+  attack: 5
   attackDis: 5
   attackSpeed: 1
   attackNum: 1
-  reward: 20
-  score: 200
+  reward: 40
+  score: 150

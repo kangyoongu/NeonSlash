@@ -15,7 +15,7 @@ MonoBehaviour:
   changeStat:
     speed: 0
     fieldOfView: 0
-    attack: 100
+    attack: 10
     attackDis: 0
     health: 0
     attackSpeed: 0

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: NormalStat
   m_EditorClassIdentifier: 
   speed: 7
-  health: 100
-  attack: 1
-  attackDis: 5
+  health: 80
+  attack: 2
+  attackDis: 1
   attackSpeed: 1.5
   attackNum: 1
-  reward: 10
-  score: 200
+  reward: 20
+  score: 100

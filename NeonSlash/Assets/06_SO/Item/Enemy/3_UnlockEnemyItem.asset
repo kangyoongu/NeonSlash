@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6350bb0fd2bcc45885c86bfe1e0503, type: 3}
+  m_Name: 3_UnlockEnemyItem
+  m_EditorClassIdentifier: 
+  itemCategory: 1
+  icon: {fileID: 0}
+  dialog: "\uC5EC\uB7EC \uBC1C\uC758 \uACF5\uACA9\uC744 \uD558\uB294 \uC801\uC774
+    \uB4F1\uC7A5\uD55C\uB2E4\n\uACE8\uB4DC : 60, \uC810\uC218 : 350"
+  itemName: "\uC0B0\uD0C4\uCD1D \uC801"
+  maxLevel: 1
+  firstCost: 500
+  addCost: 0
+  upgradePerLevel:
+  - player: {fileID: 0}
+    enemy: {fileID: 11400000, guid: 50a52b2681dd54748babde4ee4743739, type: 2}
+    skill: {fileID: 0}
+    crystal: {fileID: 0}

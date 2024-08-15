@@ -10,7 +10,7 @@ public abstract class Crystal : MonoBehaviour
     }
     IEnumerator Return()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(20f);
         ObjectPool.Instance.ReturnToPool(gameObject);
     }
     private void OnDisable()

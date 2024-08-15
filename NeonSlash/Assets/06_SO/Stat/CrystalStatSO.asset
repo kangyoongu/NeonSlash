@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crystalStat:
     unlockHeal: 0
-    heal: 100
+    heal: 0
     healPercent: 0.2
     unlockScore: 0
-    score: 1000
-    scorePercent: 0.2
+    score: 0
+    scorePercent: 0.3
     unlockInv: 0
-    invTime: 5
+    invTime: 0
     invPercent: 0.1

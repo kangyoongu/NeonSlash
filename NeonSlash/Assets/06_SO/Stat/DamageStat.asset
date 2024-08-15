@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DamageStat
   m_EditorClassIdentifier: 
   speed: 7
-  health: 100
-  attack: 4
+  health: 200
+  attack: 14
   attackDis: 5
   attackSpeed: 1
   attackNum: 1
-  reward: 20
-  score: 200
+  reward: 100
+  score: 400
