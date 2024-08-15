@@ -15,8 +15,8 @@ MonoBehaviour:
   playerStat:
     speed: 10
     fieldOfView: 10
-    attack: 20
+    attack: 2
     attackDis: 7
-    health: 894
+    health: 333333
     attackSpeed: 0.3
     attackNum: 1

@@ -7,7 +7,7 @@ public class ItemController : MonoBehaviour
 
     [HideInInspector] public ItemSO itemSO;
     int _currentLevel = 0;
-    public int GetLevel() => _currentLevel;
+    int _currentPoint = 0;
 
     private Outline _outline;
     private Image _icon;
@@ -57,22 +57,20 @@ public class ItemController : MonoBehaviour
         return usedMoney;
     }
 
-    public void SetLevel(int level)
+    public void SetLevel(int level, int point)
     {
         _currentLevel = level;
-        for (int i = 0; i < itemSO.maxLevel; i++)
-        {
-            if (i < _currentLevel)
-                _level[i].color = ItemManager.Instance.levelOnColor;
-            else
-                _level[i].color = new Color32(214, 212, 203, 255);
-        }
+        _currentPoint = point;
+        ItemManager.Instance.SetLevelColor(_level, this);
     }
+    public int GetLevel() => _currentLevel;
+    public int GetPoint() => _currentPoint;
+    public int GetTotalLevel() => _currentLevel + _currentPoint;
     private void OnClickThisItem()
     {
         SoundManager.Instance.PlayAudio(Clips.Button);
         if (GameManager.Instance.isGamePlaying)
-            UIManager.Instance.ingameUpgradePanel.BuyWindowEnable(_currentLevel, _color, this);
+            UIManager.Instance.ingameUpgradePanel.BuyWindowEnablePlay(_color, this);
         else
             UIManager.Instance.upgradePanel.BuyWindowEnable(_color, this);
     }

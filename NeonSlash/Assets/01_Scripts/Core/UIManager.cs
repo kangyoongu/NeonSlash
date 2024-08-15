@@ -31,16 +31,18 @@ public class UIManager : SingleTon<UIManager>
     public UI[] endingUI;
     public UI[] settingUI;
     public GameObject block;
+    public GameObject freeBlock;
 
     [Header("Game")]
     public GameObject gamePauseUI;
     public TextMeshProUGUI endingText;
     public TextMeshProUGUI leftTimeText;
-    public void SetLeftTime(float second) => leftTimeText.text = $"{second.ToString("0")}초";
     public TextMeshProUGUI[] earnMoneyText;
     public TextMeshProUGUI[] gameScoreText;
-
+    public TextMeshProUGUI[] pointText;
     public TextMeshProUGUI[] bestTexts;
+    public TextMeshProUGUI countDown;
+    public TextMeshProUGUI newRecordText;
 
     [Header("Shopping")]
     public ShopBuyWindow upgradePanel;
@@ -59,23 +61,53 @@ public class UIManager : SingleTon<UIManager>
     public TextMeshProUGUI hpText;
     public Image hpBar;
 
+    public IEnumerator CountDown()
+    {
+        for(int i = 5; i > 0; i--)
+        {
+            BoomString(i.ToString(), countDown);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    public void NewRecord()
+    {
+        BoomString("신기록", newRecordText, 1f);
+    }
+    private void BoomString(string text, TextMeshProUGUI textMesh, float delay = 0)
+    {
+        textMesh.transform.localScale = Vector3.zero;
+        textMesh.gameObject.SetActive(true);
+        textMesh.text = text;
+        textMesh.transform.DOScale(Vector3.one, 0.49f).OnComplete(() => {
+
+            textMesh.transform.DOScale(Vector3.zero, 0.49f).SetDelay(delay).OnComplete(() => {
+                textMesh.gameObject.SetActive(false);
+            });
+        });
+    }
+    public void SetLeftTime(float second) => leftTimeText.text = $"{second.ToString("0")}초";
     public void MainUIIn() => In(mainUI);
     public void MainUIOut() => Out(mainUI);
 
     public void PlayUIIn() => In(playUI);
     public void PlayUIOut() => Out(playUI);
 
-    public void ShopUIIn()
+    public void ShopUIIn(bool withKey = false)
     {
-        option = true;
         if (GameManager.Instance.isGamePlaying)
             resetButton.SetActive(false);
         else
             resetButton.SetActive(true);
-        In(shopUI);
+
+        if (withKey == false || (withKey && GameManager.Instance.isGamePlaying)){
+            option = true;
+            In(shopUI);
+        }
     }
     public void ShopUIOut()
     {
+        if (gamePauseUI.activeSelf == false)
+            Time.timeScale = 1f;
         option = false;
         Out(shopUI);
     }
@@ -99,7 +131,17 @@ public class UIManager : SingleTon<UIManager>
     {
         option = false;
         Out(settingUI);
+
     }
+    public void TogglePause()
+    {
+        if (GameManager.Instance.isGamePlaying && !option)
+        {
+            SoundManager.Instance.PlayAudio(Clips.Button);
+            gamePauseUI.SetActive(!gamePauseUI.activeSelf);
+        }
+    }
+
 
 
     private void In(UI[] lst)
@@ -177,15 +219,6 @@ public class UIManager : SingleTon<UIManager>
         block.SetActive(false);
     }
 
-    public void TogglePause()
-    {
-        if (GameManager.Instance.isGamePlaying && !option)
-        {
-            SoundManager.Instance.PlayAudio(Clips.Button);
-            gamePauseUI.SetActive(!gamePauseUI.activeSelf);
-        }
-    }
-
     public ItemController MakeItem(ItemSO item)
     {
         GameObject copy = Instantiate(itemPref.gameObject, itemParents[(int)item.itemCategory]);
@@ -223,11 +256,21 @@ public class UIManager : SingleTon<UIManager>
             text.text = $"점수 : {value}";
         }
     }
-
-    public void SetHP(int currentHp, int maxHp)
+    public void SetPointText(int value)
     {
-        float hpPercent = (float)currentHp / maxHp;
+        if (GameManager.Instance.isGamePlaying)
+        {
+            foreach (TextMeshProUGUI text in pointText)
+            {
+                text.text = $"포인트 : {value}";
+            }
+        }
+    }
+
+    public void SetHP(float currentHp, int maxHp)
+    {
+        float hpPercent = currentHp / maxHp;
         hpBar.fillAmount = hpPercent;
-        hpText.text = $"{currentHp} / {maxHp}";
+        hpText.text = $"{currentHp.ToString("0")} / {maxHp}";
     }
 }

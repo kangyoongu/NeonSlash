@@ -2,14 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ItemManager : SingleTon<ItemManager>
 {
+    GameData _gameData;
     [SerializeField] private List<ItemSO> _items;
     public Dictionary<ItemCategory, List<ItemController>> categoryCtrls = new();
 
     private List<ItemController> _totalList = new List<ItemController>();
     public Color levelOnColor;
+    public Color disableColor;
+    public Color pointColor;
     public Color[] colors;
 
     public Action<PlayerStat> OnUpgradePlayer;
@@ -20,6 +24,7 @@ public class ItemManager : SingleTon<ItemManager>
     public Action OnResetCrystal;
     private void Start()
     {
+        _gameData = JsonManager.Instance._gameData;
         categoryCtrls[ItemCategory.Player] = new List<ItemController>();
         categoryCtrls[ItemCategory.Enemy] = new List<ItemController>();
         categoryCtrls[ItemCategory.Skill] = new List<ItemController>();
@@ -35,21 +40,28 @@ public class ItemManager : SingleTon<ItemManager>
                 switch (item.itemCategory)
                 {
                     case ItemCategory.Player:
-                        level = JsonManager.Instance._gameData.playerLevel[categoryCtrls[ItemCategory.Player].IndexOf(itemCtrl)];
+                        level = _gameData.playerLevel[categoryCtrls[ItemCategory.Player].IndexOf(itemCtrl)];
                         break;
                     case ItemCategory.Enemy:
-                        level = Core.IsBitSet(JsonManager.Instance._gameData.enemyBool, categoryCtrls[ItemCategory.Enemy].IndexOf(itemCtrl)) ? 1 : 0;
-                        break;
+                        {
+                            int index = categoryCtrls[ItemCategory.Enemy].IndexOf(itemCtrl);
+                            level = Core.IsBitSet(_gameData.enemyBool, index) ? 1 : 0;
+                            if (index == 0 && Tutorial.Instance) {
+                                Tutorial.Instance.enemyUp = itemCtrl.GetComponent<RectTransform>();
+                                itemCtrl.GetComponent<Button>().onClick.AddListener(Tutorial.Instance.OnClickEnemyUp);
+                            }
+                            break;
+                        }
                     case ItemCategory.Skill:
-                        level = JsonManager.Instance._gameData.SkillLevel[categoryCtrls[ItemCategory.Skill].IndexOf(itemCtrl)];
+                        level = _gameData.SkillLevel[categoryCtrls[ItemCategory.Skill].IndexOf(itemCtrl)];
                         break;
                     case ItemCategory.Crsytal:
-                        level = JsonManager.Instance._gameData.crystalLevel[categoryCtrls[ItemCategory.Crsytal].IndexOf(itemCtrl)];
+                        level = _gameData.crystalLevel[categoryCtrls[ItemCategory.Crsytal].IndexOf(itemCtrl)];
                         break;
                 }
             }
             LevelUpAction(item.itemCategory, itemCtrl.GetLevel(), level, itemCtrl);
-            itemCtrl.SetLevel(level);
+            itemCtrl.SetLevel(level, 0);
         }
         _totalList.AddRange(categoryCtrls[ItemCategory.Player]);
         _totalList.AddRange(categoryCtrls[ItemCategory.Enemy]);
@@ -73,33 +85,39 @@ public class ItemManager : SingleTon<ItemManager>
         }
     }
 
-    public void OnClickBuy(ItemController currentItem)
+    public void OnClickBuy(ItemController currentItem, bool save = true)
     {
+        ItemSO.UpgradeInfo upgradeInfo = currentItem.itemSO.upgradePerLevel[currentItem.GetTotalLevel()];
+
         SoundManager.Instance.PlayAudio(Clips.Upgrade);
         switch (currentItem.itemSO.itemCategory)
         {
             case ItemCategory.Player:
-                OnUpgradePlayer?.Invoke(currentItem.itemSO.upgradePerLevel[currentItem.GetLevel()].player.changeStat);
-                JsonManager.Instance._gameData.playerLevel[categoryCtrls[ItemCategory.Player].IndexOf(currentItem)]++;
+                OnUpgradePlayer?.Invoke(upgradeInfo.player.changeStat);
+                if(save) _gameData.playerLevel[categoryCtrls[ItemCategory.Player].IndexOf(currentItem)]++;
                 break;
 
             case ItemCategory.Enemy:
-                EnemyManager.Instance.UnlockEnemy(currentItem.itemSO.upgradePerLevel[currentItem.GetLevel()].enemy.unlockEnemy);
-                Core.SetBit(ref JsonManager.Instance._gameData.enemyBool, categoryCtrls[ItemCategory.Enemy].IndexOf(currentItem), true);
+                EnemyManager.Instance.UnlockEnemy(upgradeInfo.enemy.unlockEnemy);
+                if (save) Core.SetBit(ref _gameData.enemyBool, categoryCtrls[ItemCategory.Enemy].IndexOf(currentItem), true);
                 break;
 
             case ItemCategory.Skill:
-                OnUpgradeSkill?.Invoke(currentItem.itemSO.upgradePerLevel[currentItem.GetLevel()].skill.changeStat);
-                JsonManager.Instance._gameData.SkillLevel[categoryCtrls[ItemCategory.Skill].IndexOf(currentItem)]++;
+                OnUpgradeSkill?.Invoke(upgradeInfo.skill.changeStat);
+                if (save) _gameData.SkillLevel[categoryCtrls[ItemCategory.Skill].IndexOf(currentItem)]++;
                 break;
+
             case ItemCategory.Crsytal:
-                OnUpgradeCrystal?.Invoke(currentItem.itemSO.upgradePerLevel[currentItem.GetLevel()].crystal.changeStat);
-                JsonManager.Instance._gameData.crystalLevel[categoryCtrls[ItemCategory.Crsytal].IndexOf(currentItem)]++;
+                OnUpgradeCrystal?.Invoke(upgradeInfo.crystal.changeStat);
+                if (save) _gameData.crystalLevel[categoryCtrls[ItemCategory.Crsytal].IndexOf(currentItem)]++;
                 break;
         }
-        JsonManager.Instance.SaveGameData();
+        if (save) JsonManager.Instance.SaveGameData();
 
-        currentItem.SetLevel(currentItem.GetLevel() + 1);
+        if(save) 
+            currentItem.SetLevel(currentItem.GetLevel() + 1, currentItem.GetPoint());
+        else 
+            currentItem.SetLevel(currentItem.GetLevel(), currentItem.GetPoint() + 1);
     }
 
     public void OnClickReset(int resetPrice)
@@ -112,7 +130,7 @@ public class ItemManager : SingleTon<ItemManager>
             GameManager.Instance.Money += total - resetPrice;
             foreach (ItemController item in _totalList)
             {
-                item.SetLevel(0);
+                item.SetLevel(0, 0);
             }
 
             //스킬들의 SO Reset;
@@ -136,5 +154,18 @@ public class ItemManager : SingleTon<ItemManager>
             usedMoney += item.GetUsedMoney();
         }
         return usedMoney;
+    }
+
+    public void SetLevelColor(Image[] level, ItemController item)
+    {
+        for (int i = 0; i < item.itemSO.maxLevel; i++)
+        {
+            if (i < item.GetLevel())
+                level[i].color = levelOnColor;
+            else if (i < item.GetTotalLevel())
+                level[i].color = pointColor;
+            else
+                level[i].color = disableColor;
+        }
     }
 }

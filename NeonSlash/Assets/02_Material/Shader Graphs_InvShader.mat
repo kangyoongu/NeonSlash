@@ -44,4 +44,5 @@ Material:
     m_Colors:
     - _Color: {r: 0.20440245, g: 0.80923545, b: 1, a: 1}
     - _Move: {r: 0.01, g: 0.01, b: 0, a: 0}
+    - _Tilling: {r: 0.09, g: 0.09, b: 0, a: 0}
   m_BuildTextureStacks: []

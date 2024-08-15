@@ -81,7 +81,7 @@ public class PlayerSkill : MonoBehaviour
         copySkillStat = new SkillStatSO(skillStatSO.skillStat);
     }
 
-    public void GameStart()
+    public void SetSkills()
     {
         SetOrb();
         SetSkill();
@@ -131,18 +131,18 @@ public class PlayerSkill : MonoBehaviour
             SoundManager.Instance.PlayAudio(Clips.Skill1, 0.45f);
             _skillParticle.Play();
             _skillCooltime = copySkillStat.skillStat.attackCooltime;
-            List<Enemy> enemiesInSight = DetectEnemies();
-            foreach (Enemy enemy in enemiesInSight)
+            /*List<AbstractEnemy> enemiesInSight = DetectEnemies();
+            foreach (AbstractEnemy enemy in enemiesInSight)
             {
                 enemy.TakeDamage(copySkillStat.skillStat.attackDamage);
-            }
+            }*/
         }
     }
     
 
-    List<Enemy> DetectEnemies()
+   /* List<AbstractEnemy> DetectEnemies()
     {
-        List<Enemy> enemiesInSight = new List<Enemy>();
+        List<AbstractEnemy> enemiesInSight = new List<AbstractEnemy>();
 
         // 구 모양으로 범위 내의 콜라이더 가져오기
         Collider[] colliders = Physics.OverlapSphere(skillPivot.position, copySkillStat.skillStat.attackDistance, enemyLayer);
@@ -158,18 +158,18 @@ public class PlayerSkill : MonoBehaviour
             // 각도가 detectionAngle 이내인지 확인
             if (angleToEnemy < 30f / 2f)
             {
-                enemiesInSight.Add(enemyTransform.parent.GetComponent<Enemy>());
+                enemiesInSight.Add(enemyTransform.parent.GetComponent<AbstractEnemy>());
             }
         }
 
         return enemiesInSight;
-    }
+    }*/
 
     private void Dash()
     {
         if (copySkillStat.skillStat.unlockDash && GameManager.Instance.isGamePlaying && _dashCooltime <= 0f)
         {
-            SoundManager.Instance.PlayAudio(Clips.Dash);
+            SoundManager.Instance.PlayAudio(Clips.Dash, 1.4f);
             _dashCooltime = copySkillStat.skillStat.dashCooltime;
             _playerCompo.playerMove.movable = false;
             _rigid.AddForce(_playerCompo.playerMove.moveDirection * copySkillStat.skillStat.dashDistance * 100, ForceMode.Impulse);
@@ -195,5 +195,6 @@ public class PlayerSkill : MonoBehaviour
         if (changeStat.unlockDash) copySkillStat.skillStat.unlockDash = true;
         if (changeStat.unlockAttack) copySkillStat.skillStat.unlockAttack = true;
         if (changeStat.unlockCircle) copySkillStat.skillStat.unlockCircle = true;
+        SetSkills();
     }
 }

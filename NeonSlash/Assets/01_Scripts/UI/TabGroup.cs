@@ -12,6 +12,10 @@ namespace Kang
         public Color tabActive;
         public TabButton selectedTab;
         public List<GameObject> objectsToSwap;
+        private void Start()
+        {
+            StartCoroutine(Core.FrameDelay(() => OnTabSelected(tabButtons[0])));
+        }
         public void Subscribe(TabButton button)
         {
             if (tabButtons == null)

@@ -20,7 +20,9 @@ public enum Clips
     Skill1,
     OrbHit,
     Clear,
-    Button
+    Button,
+    BossSpawn,
+    PutMoney
 }
 
 [Serializable]
@@ -28,6 +30,8 @@ public struct Clips3D
 {
     public AudioClip enemyShot;
     public AudioClip enemyDie;
+    public AudioClip bossDash;
+    public AudioClip bossLaser;
 }
 
 public class SoundManager : SingleTon<SoundManager>

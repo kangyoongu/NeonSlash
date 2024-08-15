@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public static class Core
 {
@@ -28,5 +30,11 @@ public static class Core
     public static bool RandomBool()
     {
         return Random.value < 0.5f;
+    }
+    public static IEnumerator FrameDelay(Action action)
+    {
+        yield return null;
+        yield return null;
+        action?.Invoke();
     }
 }

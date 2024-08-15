@@ -33,7 +33,7 @@ public class EnemyGun : MonoBehaviour
     }
     private void Shot()
     {
-        _enemyCompo.audioSource.PlayOneShot(SoundManager.Instance.clips3D.enemyShot, 0.2f);
+        _enemyCompo.audioSource.PlayOneShot(SoundManager.Instance.clips3D.enemyShot, 0.8f);
         for (int i = 0; i < _enemyCompo.statSO.attackNum; i++)
         {
             Transform bullet = ObjectPool.Instance.GetPooledObject("EnemyBullet").transform;

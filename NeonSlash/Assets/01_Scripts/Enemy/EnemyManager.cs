@@ -38,7 +38,6 @@ public struct DefaltSpawnData
 public class EnemyManager : SingleTon<EnemyManager>
 {
     public List<PhaseData> spawnDatas = new List<PhaseData>();
-
     float _time = 0;
     int _currentPhase = 0;
 
@@ -100,8 +99,13 @@ public class EnemyManager : SingleTon<EnemyManager>
     {
         while (_currentPhase <= i+1)
         {
-            yield return new WaitForSeconds(spawnDatas[i].defaltSpawnData[j].time);
-            SpawnEnemy(spawnDatas[i].defaltSpawnData[j].enemyType);
+            if (GameManager.Instance.isGamePlaying)
+            {
+                yield return new WaitForSeconds(spawnDatas[i].defaltSpawnData[j].time);
+                SpawnEnemy(spawnDatas[i].defaltSpawnData[j].enemyType);
+            }
+            else
+                yield break;
         }
     }
     private void SpawnEnemy(EnemyType type)

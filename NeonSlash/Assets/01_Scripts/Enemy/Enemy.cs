@@ -13,8 +13,7 @@ public class Enemy : AbstractEnemy
 
     protected override void Awake()
     {
-        base.OnEnable();
-        _rigid = GetComponent<Rigidbody>();
+        base.Awake();
         audioSource = GetComponent<AudioSource>();
     }
     protected override void OnEnable()
@@ -53,12 +52,12 @@ public class Enemy : AbstractEnemy
             _rigid.velocity = new Vector3(transform.forward.x * statSO.speed, _rigid.velocity.y, transform.forward.z * statSO.speed);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnHitOrb(Transform player)
     {
-        if (other.CompareTag("Orb") && _notOrbTime <= 0f)
+        if (_notOrbTime <= 0f)
         {
             SoundManager.Instance.PlayAudio(Clips.OrbHit);
-            TakeDamage(other.transform.root.GetComponent<PlayerSkill>().copySkillStat.skillStat.circleDamage);
+            TakeDamage(player.GetComponent<PlayerSkill>().copySkillStat.skillStat.circleDamage);
             _notOrbTime = 1f;
             _rigid.AddForce((transform.position - Player.player.position).normalized * 50f, ForceMode.Impulse);
             movable = false;
@@ -67,11 +66,12 @@ public class Enemy : AbstractEnemy
 
     protected override IEnumerator Die()
     {
-        audioSource.PlayOneShot(SoundManager.Instance.clips3D.enemyDie, 6f);
+        audioSource.PlayOneShot(SoundManager.Instance.clips3D.enemyDie, 4f);
         GameManager.Instance.AddEarnMoney(statSO.reward);
         GameManager.Instance.AddGameScore(statSO.score);
-        StartCoroutine(base.Die());
-        yield return null;
+        OnDie?.Invoke();
+        yield return new WaitForSeconds(7f);
+        ObjectPool.Instance.ReturnToPool(gameObject);
     }
 
     protected override int GetHealth()
