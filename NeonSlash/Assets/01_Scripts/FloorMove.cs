@@ -11,19 +11,23 @@ public class FloorMove : MonoBehaviour
     [SerializeField] private float duration;
     private void Awake()
     {
-        float trash;
         floorMaterial = GetComponent<MeshRenderer>().material;
     }
     private void Start()
     {
         Color initialColor = floorMaterial.color;
         Color.RGBToHSV(initialColor, out float h, out float s, out float v);
+
+        float initialV = v; // 초기 밝기 값 저장
+
         // 무한 반복 애니메이션 설정
         DOTween.To(() => h, x => h = x, 1f, duration)
+            .SetEase(Ease.Linear)
             .SetLoops(-1, LoopType.Restart)
             .OnUpdate(() => {
+                v = Mathf.Lerp(initialV, 1f, Mathf.Abs(Mathf.Abs(h - 0.6f) - 0.5f) * 1.8f);
                 // HSV 값에서 새로운 색상을 계산하고 Material의 색상 업데이트
-                Color newColor = Color.HSVToRGB(h % 1f, s, v); // x % 1f로 Hue를 0~1 사이로 유지
+                Color newColor = Color.HSVToRGB(h % 1f, s, v); // h % 1f로 Hue를 0~1 사이로 유지
                 floorMaterial.color = newColor;
             });
     }

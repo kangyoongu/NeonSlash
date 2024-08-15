@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 namespace Kang
 {
@@ -12,18 +13,18 @@ namespace Kang
         [HideInInspector] public TabGroup tabGroup;
 
         [HideInInspector] public Image background;
-
-        private void Start()
+        [HideInInspector] public Action OnClick;
+        private void Awake()
         {
             tabGroup = GetComponentInParent<TabGroup>();
             background = GetComponent<Image>();
-            tabGroup.Subscribe(this);
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             SoundManager.Instance.PlayAudio(Clips.Button);
             tabGroup.OnTabSelected(this);
+            OnClick?.Invoke();
         }
 
         public void OnPointerEnter(PointerEventData eventData)

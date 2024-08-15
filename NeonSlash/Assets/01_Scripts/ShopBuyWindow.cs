@@ -42,6 +42,29 @@ public class ShopBuyWindow : MonoBehaviour
         SetLevel();
         gameObject.SetActive(true);
     }
+
+    public void BuyWindowEnablePlay(Color outColor, ItemController itemCtrl)
+    {
+        currentItem = itemCtrl;
+
+        _itemName.text = itemCtrl.itemSO.itemName;
+        _icon.sprite = itemCtrl.itemSO.icon;
+        _outline.effectColor = outColor;
+        _dialog.text = itemCtrl.itemSO.dialog;
+
+        for (int i = 0; i < 5; i++)
+        {
+            if (i >= itemCtrl.itemSO.maxLevel)
+                _level[i].gameObject.SetActive(false);
+            else
+                _level[i].gameObject.SetActive(true);
+        }
+
+        SetLevel(false);
+        gameObject.SetActive(true);
+    }
+
+    /*
     public void BuyWindowEnable(int currentLevel, Color outColor, ItemController itemCtrl)
     {
         currentItem = itemCtrl;
@@ -68,51 +91,73 @@ public class ShopBuyWindow : MonoBehaviour
         }
 
         gameObject.SetActive(true);
-    }
+    }*/
 
     public void OnClickBuy()
     {
-        if(currentPrice > GameManager.Instance.Money)
+        if(currentPrice > GameManager.Instance.Money || currentItem.GetTotalLevel() >= currentItem.itemSO.maxLevel)
         {
             SoundManager.Instance.PlayAudio(Clips.Cancel);
             return;
         }
-        if(currentItem.GetLevel() >= currentItem.itemSO.maxLevel)
-        {
-            SoundManager.Instance.PlayAudio(Clips.Cancel);
-            return;
-        }
+
         GameManager.Instance.Money -= currentPrice;
 
         ItemManager.Instance.OnClickBuy(currentItem);
         SetLevel();
     }
-    private void SetLevel()
+    public void OnClickBuyUsePoint()
     {
-        for (int i = 0; i < _level.Length; i++)
+        if (GameManager.Instance.Point <= 0 || currentItem.GetTotalLevel() >= currentItem.itemSO.maxLevel)
         {
-            if(i < currentItem.GetLevel())
-                _level[i].color = ItemManager.Instance.levelOnColor;
-            else 
-                _level[i].color = new Color32(214, 212, 203, 255);
+            SoundManager.Instance.PlayAudio(Clips.Cancel);
+            return;
         }
+
+        GameManager.Instance.AddPoint(-1);
+
+        ItemManager.Instance.OnClickBuy(currentItem, false);
+        SetLevel(false);
+    }
+    private void SetLevel(bool useMoney = true)
+    {
+        ItemManager.Instance.SetLevelColor(_level, currentItem);
         currentPrice = currentItem.GetPrice();
 
 
-        if (currentItem.GetLevel() >= currentItem.itemSO.maxLevel)
+        if (currentItem.GetTotalLevel() >= currentItem.itemSO.maxLevel)
         {
             _priceBackground.color = _priceOffColor;
             _price.text = "최대레벨입니다";
+            return;
         }
-        else if (currentPrice > GameManager.Instance.Money)
+        if (useMoney)
         {
-            _priceBackground.color = _priceOffColor;
-            _price.text = $"구매 ({currentPrice}G)";
+            if (currentPrice > GameManager.Instance.Money)
+            {
+                _priceBackground.color = _priceOffColor;
+                _price.text = $"구매 ({currentPrice}G)";
+            }
+            else
+            {
+                _priceBackground.color = _priceOnColor;
+                _price.text = $"구매 ({currentPrice}G)";
+            }
         }
+
         else
         {
-            _priceBackground.color = _priceOnColor;
-            _price.text = $"구매 ({currentPrice}G)";
+            if (GameManager.Instance.Point <= 0)
+            {
+                _priceBackground.color = _priceOffColor;
+                _price.text = "구매 (1포인트)";
+            }
+
+            else
+            {
+                _priceBackground.color = _priceOnColor;
+                _price.text = "구매 (1포인트)";
+            }
         }
     }
 }

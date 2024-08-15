@@ -8,7 +8,7 @@ public class PlayerBullet : Bullet
     {
         if (other.CompareTag("Enemy"))
         {
-            other.transform.parent.GetComponent<Enemy>().TakeDamage(damage);
+            other.transform.parent.GetComponent<AbstractEnemy>().TakeDamage(damage);
             ObjectPool.Instance.ReturnToPool(gameObject);
         }
     }

@@ -7,10 +7,13 @@ public class GameManager : SingleTon<GameManager>
     public bool isGamePlaying = false;
 
     float _leftTime = 300f;
-    int earnMoney = 0;
-    int gameScore = 0;
+    int _earnMoney = 0;
+    int _gameScore = 0;
+    public int Point { get; private set; }
 
-    public Action OnGameStart;
+    bool _countdown = false;
+    bool _bestScore = false;
+    public Action OnGameStart = null;
     public int Money
     {
         get => PlayerPrefs.GetInt("Money");
@@ -19,11 +22,12 @@ public class GameManager : SingleTon<GameManager>
             PlayerPrefs.SetInt("Money", value);
             UIManager.Instance.SetMoneyText(PlayerPrefs.GetInt("Money"));
         }
+    
     }
     private void Awake()
     {
         if (!PlayerPrefs.HasKey("Money"))
-            PlayerPrefs.SetInt("Money", 999999999);
+            PlayerPrefs.SetInt("Money", 0);
 
         if (!PlayerPrefs.HasKey("BestScore"))
             PlayerPrefs.SetInt("BestScore", 0);
@@ -43,6 +47,11 @@ public class GameManager : SingleTon<GameManager>
             {
                 Clear();
             }
+            else if(_leftTime <= 5.5f && _countdown == false)
+            {
+                _countdown = true;
+                StartCoroutine(UIManager.Instance.CountDown());
+            }
             UIManager.Instance.SetLeftTime(_leftTime);
         }
     }
@@ -52,18 +61,20 @@ public class GameManager : SingleTon<GameManager>
         SoundManager.Instance.PlayAudio(Clips.Clear);
         _leftTime = 0;
         isGamePlaying = false;
-        Money += earnMoney;
-        ApplyScore();
+        ApplyMoney();
         UIManager.Instance.EndingUIIn(true);
     }
+
 
     public void GameStart()
     {
         isGamePlaying = true;
-        earnMoney = 0;
-        gameScore = 0;
-        UIManager.Instance.SetEarnMoney(earnMoney);
-        UIManager.Instance.SetGameScore(gameScore);
+        _earnMoney = 0;
+        _gameScore = 0;
+        Point = 0;
+        UIManager.Instance.SetEarnMoney(_earnMoney);
+        UIManager.Instance.SetGameScore(_gameScore);
+        UIManager.Instance.SetPointText(Point);
         OnGameStart?.Invoke();
     }
 
@@ -78,25 +89,49 @@ public class GameManager : SingleTon<GameManager>
 
     public void ReloadScene()
     {
-        SceneManager.LoadScene(gameObject.scene.name);
+        if(PlayerPrefs.GetInt("Tut") >= 5)
+            SceneManager.LoadScene(gameObject.scene.name);
     }
     public void AddEarnMoney(int value)
     {
-        earnMoney += value;
-        UIManager.Instance.SetEarnMoney(earnMoney);
+        _earnMoney += value;
+        UIManager.Instance.SetEarnMoney(_earnMoney);
     }
     public void AddGameScore(int value)
     {
-        gameScore += value;
-        UIManager.Instance.SetGameScore(gameScore);
+        _gameScore += value;
+        ApplyScore();
+        UIManager.Instance.SetGameScore(_gameScore);
+    }
+    public void AddPoint(int value)
+    {
+        Point += value;
+        UIManager.Instance.SetPointText(Point);
+    }
+    public void ApplyMoney()
+    {
+        Money += _earnMoney;
+    }
+    public void ApplyMoney(int value)
+    {
+        Money += value;
     }
 
     public void ApplyScore()
     {
-        if(gameScore >= PlayerPrefs.GetInt("BestScore"))
+        if(_gameScore > PlayerPrefs.GetInt("BestScore"))
         {
-            PlayerPrefs.SetInt("BestScore", gameScore);
-            UIManager.Instance.SetBestText(gameScore);
+            PlayerPrefs.SetInt("BestScore", _gameScore);
+            UIManager.Instance.SetBestText(_gameScore);
+            if (PlayerPrefs.GetInt("BestScore") > 0 && _bestScore == false)
+            {
+                _bestScore = true;
+                UIManager.Instance.NewRecord();
+            }
         }
+    }
+    public void TimeScale(int value)
+    {
+        Time.timeScale = value;
     }
 }

@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public PlayerMovement playerMove;
     public ParticleSystem hpParticle;
     public ParticleSystem starParticle;
-    int _currentHp;
+    float _currentHp;
+    public float CurrentHp { get => _currentHp; }
 
     bool _inv = false;
     public Material _invMaterial;
@@ -55,14 +56,17 @@ public class Player : MonoBehaviour
 
     private void GameStart()
     {
+        if (Tutorial.Instance != null && !Tutorial.Instance.endTut)
+            copyPlayerStat.playerStat.health = 999999;
+
         CameraController.Instance.SetFOV(copyPlayerStat.playerStat.fieldOfView);
         _currentHp = copyPlayerStat.playerStat.health;
         UIManager.Instance.SetHP(_currentHp, copyPlayerStat.playerStat.health);
-        _playerSkill.GameStart();
+        _playerSkill.SetSkills();
     }
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
-        if (!_inv || amount < 0)
+        if ((!_inv || amount < 0f) && GameManager.Instance.isGamePlaying)
         {
             SoundManager.Instance.PlayAudio(Clips.PlayerHit, 0.2f);
             _currentHp -= amount;
@@ -102,8 +106,8 @@ public class Player : MonoBehaviour
     {
         SoundManager.Instance.PlayAudio(Clips.PlayerDie, 0.3f);
         GameManager.Instance.isGamePlaying = false;
+        GameManager.Instance.ApplyMoney();
         yield return new WaitForSeconds(2f);
-        GameManager.Instance.ApplyScore();
         UIManager.Instance.EndingUIIn(false);
     }
 
@@ -116,5 +120,8 @@ public class Player : MonoBehaviour
         copyPlayerStat.playerStat.health      += changeStat.health;
         copyPlayerStat.playerStat.attackSpeed += changeStat.attackSpeed;
         copyPlayerStat.playerStat.attackNum   += changeStat.attackNum;
+        CameraController.Instance.SetFOV(copyPlayerStat.playerStat.fieldOfView);
+        if (GameManager.Instance.isGamePlaying)
+            _currentHp += changeStat.health;
     }
 }

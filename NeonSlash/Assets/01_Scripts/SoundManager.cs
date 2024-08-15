@@ -20,7 +20,9 @@ public enum Clips
     Skill1,
     OrbHit,
     Clear,
-    Button
+    Button,
+    BossSpawn,
+    PutMoney
 }
 
 [Serializable]
@@ -28,6 +30,8 @@ public struct Clips3D
 {
     public AudioClip enemyShot;
     public AudioClip enemyDie;
+    public AudioClip bossDash;
+    public AudioClip bossLaser;
 }
 
 public class SoundManager : SingleTon<SoundManager>
@@ -65,19 +69,19 @@ public class SoundManager : SingleTon<SoundManager>
     {
         BGMSlider.value = JsonManager.Instance.BGM;
         SFXSlider.value = JsonManager.Instance.SFX;
-        audioMixer.SetFloat("BGM", Mathf.Log10(BGMSlider.value) * 20);
-        audioMixer.SetFloat("SFX", Mathf.Log10(SFXSlider.value) * 20);
+        audioMixer.SetFloat("BGM", Mathf.Log10(BGMSlider.value) * 20f);
+        audioMixer.SetFloat("SFX", Mathf.Log10(SFXSlider.value) * 20f);
     }
 
     public void SetBGMVolume(float volume)
     {
-        audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20f);
         JsonManager.Instance.BGM = volume;
     }
 
     public void SetSFXVolume(float volume)
     {
-        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20f);
         JsonManager.Instance.SFX = volume;
     }
     public void PlayAudio(Clips clips, float volumn = 0.4f)
