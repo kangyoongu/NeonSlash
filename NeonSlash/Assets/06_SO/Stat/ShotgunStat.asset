@@ -17,6 +17,6 @@ MonoBehaviour:
   attack: 2
   attackDis: 5
   attackSpeed: 1.5
-  attackNum: 5
+  attackNum: 4
   reward: 60
   score: 350
