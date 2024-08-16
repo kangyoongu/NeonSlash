@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86fd827d58b0caf408b321f5275cb593, type: 3}
-  m_Name: BossSO
+  m_Name: 1_BossSO
   m_EditorClassIdentifier: 
-  health: 400000
-  reward: 1000
+  health: 2000
+  reward: 800
   score: 1000
-  speed: 3
+  speed: 5
   patternDelay: 3
   dashDamage: 50
   dashSpeed: 0.01
@@ -24,7 +24,7 @@ MonoBehaviour:
   shotCount: 500
   bulletLife: 3
   oneShotTurn: 1.5
-  laserDamage: 80
+  laserDamage: 70
   laserTime: 1
   laserDelay: 2
-  laserCount: 0
+  laserCount: 3

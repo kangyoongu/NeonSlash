@@ -17,9 +17,9 @@ MonoBehaviour:
     dashDistance: 0
     dashCooltime: 0
     unlockAttack: 1
-    attackDamage: 150
-    attackDistance: 23
-    attackCooltime: 30
+    attackDamage: 16
+    attackDistance: 24
+    attackCooltime: 20
     unlockCircle: 0
     circleNum: 0
     circleDamage: 0

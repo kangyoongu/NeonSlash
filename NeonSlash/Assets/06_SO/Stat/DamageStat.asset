@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 7
   health: 200
-  attack: 14
+  attack: 11
   attackDis: 5
   attackSpeed: 1
   attackNum: 1

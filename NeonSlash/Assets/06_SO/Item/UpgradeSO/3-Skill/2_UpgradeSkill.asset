@@ -22,4 +22,4 @@ MonoBehaviour:
     attackCooltime: 0
     unlockCircle: 1
     circleNum: 1
-    circleDamage: 70
+    circleDamage: 80
