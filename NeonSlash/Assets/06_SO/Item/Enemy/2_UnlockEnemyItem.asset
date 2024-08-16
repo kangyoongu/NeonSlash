@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 2_UnlockEnemyItem
   m_EditorClassIdentifier: 
   itemCategory: 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 41cabc7f522111040b305bc043d9d067, type: 3}
   dialog: "\uCCB4\uB825\uC774 \uB9CE\uACE0 \uACE8\uB4DC\uB97C \uB9CE\uC774 \uC8FC\uB294
     \uC801\uC774 \uB4F1\uC7A5\uD55C\uB2E4\n\uACE8\uB4DC : 140, \uC810\uC218 : 300"
   itemName: "\uD0F1\uCEE4 \uC801"

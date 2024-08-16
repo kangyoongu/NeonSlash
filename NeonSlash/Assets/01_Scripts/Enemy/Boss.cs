@@ -6,7 +6,7 @@ using UnityEngine;
 public class Boss : AbstractEnemy
 {
     [HideInInspector] public BossSO currentBossSO;
-    public Player player;
+    [HideInInspector] public Player player;
     [HideInInspector] public AudioSource audioSource;
     public Transform bulletTrm;
 
@@ -118,7 +118,7 @@ public class Boss : AbstractEnemy
                 if(!GameManager.Instance.isGamePlaying) yield break;
 
                 audioSource.PlayOneShot(SoundManager.Instance.clips3D.enemyShot, 1f);
-                Transform bullet = ObjectPool.Instance.GetPooledObject("EnemyBullet").transform;
+                Transform bullet = ObjectPool.Instance.GetPooledObject("BossBullet").transform;
                 bullet.SetPositionAndRotation(bulletTrm.position, bulletTrm.rotation * Quaternion.Euler(0f, 0f, 90f * j));
                 bullet.GetComponent<Bullet>().Init(currentBossSO.bulletLife, currentBossSO.crossDamage);
                 bulletTrm.Rotate(Vector3.forward * currentBossSO.oneShotTurn);

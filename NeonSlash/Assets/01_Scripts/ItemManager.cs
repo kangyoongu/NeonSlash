@@ -10,7 +10,7 @@ public class ItemManager : SingleTon<ItemManager>
     [SerializeField] private List<ItemSO> _items;
     public Dictionary<ItemCategory, List<ItemController>> categoryCtrls = new();
 
-    private List<ItemController> _totalList = new List<ItemController>();
+    private List<ItemController> _totalList;
     public Color levelOnColor;
     public Color disableColor;
     public Color pointColor;
@@ -24,11 +24,16 @@ public class ItemManager : SingleTon<ItemManager>
     public Action OnResetCrystal;
     private void Start()
     {
+        LoadGameData();
+    }
+    private void LoadGameData()
+    {
         _gameData = JsonManager.Instance._gameData;
         categoryCtrls[ItemCategory.Player] = new List<ItemController>();
         categoryCtrls[ItemCategory.Enemy] = new List<ItemController>();
         categoryCtrls[ItemCategory.Skill] = new List<ItemController>();
         categoryCtrls[ItemCategory.Crsytal] = new List<ItemController>();
+        _totalList = new List<ItemController>();
         foreach(ItemSO item in _items)
         {
             ItemController itemCtrl = UIManager.Instance.MakeItem(item);
@@ -46,6 +51,7 @@ public class ItemManager : SingleTon<ItemManager>
                         {
                             int index = categoryCtrls[ItemCategory.Enemy].IndexOf(itemCtrl);
                             level = Core.IsBitSet(_gameData.enemyBool, index) ? 1 : 0;
+
                             if (index == 0 && Tutorial.Instance) {
                                 Tutorial.Instance.enemyUp = itemCtrl.GetComponent<RectTransform>();
                                 itemCtrl.GetComponent<Button>().onClick.AddListener(Tutorial.Instance.OnClickEnemyUp);
@@ -126,6 +132,13 @@ public class ItemManager : SingleTon<ItemManager>
         if (GameManager.Instance.Money >= resetPrice && total > 0)
         {
             SoundManager.Instance.PlayAudio(Clips.Button);
+            //스킬들의 SO Reset;
+            OnResetPlayer?.Invoke();
+            OnResetSkill?.Invoke();
+            OnResetCrystal?.Invoke();
+            EnemyManager.Instance.ResetUnlockData();
+            JsonManager.Instance.ResetGameData();
+            _gameData = JsonManager.Instance._gameData;
             //돈 계산
             GameManager.Instance.Money += total - resetPrice;
             foreach (ItemController item in _totalList)
@@ -133,13 +146,6 @@ public class ItemManager : SingleTon<ItemManager>
                 item.SetLevel(0, 0);
             }
 
-            //스킬들의 SO Reset;
-            OnResetPlayer?.Invoke();
-            OnResetSkill?.Invoke();
-            OnResetCrystal?.Invoke();
-            EnemyManager.Instance.ResetUnlockData();
-
-            JsonManager.Instance.ResetGameData();
         }
         else
         {

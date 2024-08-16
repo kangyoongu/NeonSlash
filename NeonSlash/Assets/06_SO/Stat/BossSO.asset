@@ -18,13 +18,13 @@ MonoBehaviour:
   speed: 3
   patternDelay: 3
   dashDamage: 50
-  dashSpeed: 0.05
+  dashSpeed: 0.01
   crossDamage: 3
   shotDelay: 0.05
-  shotCount: 1
-  bulletLife: 6
+  shotCount: 500
+  bulletLife: 3
   oneShotTurn: 1.5
   laserDamage: 80
   laserTime: 1
   laserDelay: 2
-  laserCount: 1
+  laserCount: 0

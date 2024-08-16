@@ -35,8 +35,8 @@ public class PlayerSkill : MonoBehaviour
     {
         _rigid = GetComponent<Rigidbody>();
         orbTrails = new LineRenderer[orbs.Length];
-        _skillImageRoot = _skillImage.transform.parent.gameObject;
-        _dashImageRoot = _dashImage.transform.parent.gameObject;
+        _skillImageRoot = _skillImage.transform.parent.parent.gameObject;
+        _dashImageRoot = _dashImage.transform.parent.parent.gameObject;
         for(int i = 0; i < orbs.Length; i++)
         {
             orbTrails[i] = orbs[i].gameObject.GetComponent<LineRenderer>();

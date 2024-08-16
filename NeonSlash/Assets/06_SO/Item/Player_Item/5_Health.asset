@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 5_Health
   m_EditorClassIdentifier: 
   itemCategory: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 93b268777db868a4ebac807180d75d53, type: 3}
   dialog: "\uCCB4\uB825\uC774 \uB298\uC5B4\uB09C\uB2E4"
   itemName: "\uCCB4\uB825"
   maxLevel: 5

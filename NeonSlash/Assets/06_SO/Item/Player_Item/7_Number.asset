@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 7_Number
   m_EditorClassIdentifier: 
   itemCategory: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 0e4b53c142cf2ba4c9980e8b3303ffac, type: 3}
   dialog: "\uACF5\uACA9\uC758 \uCD1D\uC54C \uAC1C\uC218\uAC00 \uB298\uC5B4\uB09C\uB2E4"
   itemName: "\uCD1D\uC54C \uAC1C\uC218"
   maxLevel: 5
