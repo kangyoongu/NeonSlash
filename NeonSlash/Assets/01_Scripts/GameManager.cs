@@ -130,8 +130,4 @@ public class GameManager : SingleTon<GameManager>
             }
         }
     }
-    public void TimeScale(int value)
-    {
-        Time.timeScale = value;
-    }
 }

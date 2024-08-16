@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
 
     private void GameStart()
     {
-        if (Tutorial.Instance != null && !Tutorial.Instance.endTut)
+        if (PlayerPrefs.GetInt("Tut") <= 5)
             copyPlayerStat.playerStat.health = 999999;
 
         CameraController.Instance.SetFOV(copyPlayerStat.playerStat.fieldOfView);

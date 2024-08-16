@@ -101,6 +101,7 @@ public class UIManager : SingleTon<UIManager>
 
         if (withKey == false || (withKey && GameManager.Instance.isGamePlaying)){
             option = true;
+            Time.timeScale = 0f;
             In(shopUI);
         }
     }

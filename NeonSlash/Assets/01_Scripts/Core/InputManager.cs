@@ -21,6 +21,9 @@ public class InputManager : SingleTon<InputManager>
     private void Awake()
     {
         _inputs = new OverallInput();
+    }
+    private void OnEnable()
+    {
         _inputs.Enable();
 
         _inputs.Overall.Escape.performed += Excape;
@@ -33,10 +36,10 @@ public class InputManager : SingleTon<InputManager>
         _inputs.Player.Dash.performed += EnterSpace;
         _inputs.Player.Skill1.performed += EnterE;
     }
-
     private void Tab(InputAction.CallbackContext obj)
     {
-        OnClickTab?.Invoke(obj);
+        if(UIManager.Instance.block.activeSelf == false)
+            OnClickTab?.Invoke(obj);
     }
 
     private void EnterE(InputAction.CallbackContext obj)
@@ -60,5 +63,18 @@ public class InputManager : SingleTon<InputManager>
     private void Excape(InputAction.CallbackContext obj)
     {
         OnClickEsc?.Invoke(obj);
+    }
+
+
+    private void OnDisable()
+    {
+        _inputs.Disable();
+
+        _inputs.Overall.Escape.performed -= Excape;
+        _inputs.Overall.Tab.performed -= Tab;
+        _inputs.Overall.SpawnBoss.performed += EnterF;
+
+        _inputs.Player.Dash.performed -= EnterSpace;
+        _inputs.Player.Skill1.performed -= EnterE;
     }
 }
