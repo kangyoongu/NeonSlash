@@ -290,6 +290,7 @@ GameObject:
   - component: {fileID: 1049749539513951690}
   - component: {fileID: 6709916110667472206}
   - component: {fileID: 7548731214202139782}
+  - component: {fileID: 767646123405958255}
   m_Layer: 7
   m_Name: Visual
   m_TagString: Enemy
@@ -383,6 +384,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.522933, y: 0.72983503, z: 0.72342205}
   m_Center: {x: -0.00016150149, y: 1.2836925, z: 0.021079995}
+--- !u!205 &767646123405958255
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6310888525134151836}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.075
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 6709916110667472206}
+  - screenRelativeHeight: 0.0482
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.023
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1 &7962285555655844075
 GameObject:
   m_ObjectHideFlags: 0

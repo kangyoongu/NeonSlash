@@ -39,7 +39,7 @@ public abstract class AbstractEnemy : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        if (GameManager.Instance.isGamePlaying)
+        if (GameManager.Instance.isGamePlaying && _currentHp > 0)
         {
             _currentHp -= amount;
             if (_currentHp <= 0)

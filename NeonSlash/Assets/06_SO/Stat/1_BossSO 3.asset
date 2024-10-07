@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86fd827d58b0caf408b321f5275cb593, type: 3}
   m_Name: 1_BossSO 3
   m_EditorClassIdentifier: 
-  health: 7000
+  health: 9000
   reward: 2000
   score: 2500
   speed: 6
@@ -23,7 +23,7 @@ MonoBehaviour:
   shotDelay: 0.05
   shotCount: 500
   bulletLife: 3
-  oneShotTurn: 1.5
+  oneShotTurn: 1
   laserDamage: 80
   laserTime: 1
   laserDelay: 1

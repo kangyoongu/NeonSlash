@@ -688,6 +688,7 @@ GameObject:
   - component: {fileID: 2305967262958930165}
   - component: {fileID: 5076591355625266891}
   - component: {fileID: 5077574465835650120}
+  - component: {fileID: 6159234476863031176}
   m_Layer: 7
   m_Name: Visual
   m_TagString: Enemy
@@ -782,6 +783,31 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 18c800137884f7e41a1c548b743d113b, type: 3}
+--- !u!205 &6159234476863031176
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7504408361746948390}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.075
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5076591355625266891}
+  - screenRelativeHeight: 0.0482
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.023
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1001 &6758961712284591368
 PrefabInstance:
   m_ObjectHideFlags: 0
